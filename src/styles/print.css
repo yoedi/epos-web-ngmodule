@@ -1,0 +1,13 @@
+/*
+ * Print styles for the 58 mm thermal receipt.
+ * Only the receipt is printed; everything else is hidden.
+ */
+
+@media print {
+  @page {
+    size: 58mm auto;
+    margin: 0;
+  }
+
+  /* Receipt layout rules go here (see receipt-print component). */
+}

@@ -1,0 +1,234 @@
+/* ePOS — Pemetaan token ke PrimeNG
+ *
+ * Dimuat SETELAH tokens.css dan setelah CSS PrimeNG.
+ * Di angular.json:
+ *   "styles": [
+ *     "src/styles/tokens.css",
+ *     "src/styles/theme.css",
+ *     "src/styles/print.css"
+ *   ]
+ *
+ * PrimeNG 18+ memakai design token ber-prefix --p-*. Nama token bisa berbeda
+ * antar versi; kalau ada komponen yang warnanya tidak ikut berubah, inspect
+ * elemennya di DevTools dan tambahkan variabel --p-* yang muncul di sana.
+ */
+
+:root {
+  /* ── Primary ──────────────────────────────────────────────── */
+  --p-primary-color: var(--c-primary);
+  --p-primary-hover-color: var(--c-primary-hover);
+  --p-primary-active-color: var(--c-primary-deep);
+  --p-primary-contrast-color: var(--c-ink-on-primary);
+
+  /* Skala primary: hanya tingkat yang dipakai komponen PrimeNG */
+  --p-primary-50: var(--c-primary-tint-bg);
+  --p-primary-100: var(--c-primary-tint-bg);
+  --p-primary-200: var(--c-primary-tint-border);
+  --p-primary-300: var(--c-avatar-bg);
+  --p-primary-400: var(--c-primary-hover);
+  --p-primary-500: var(--c-primary);
+  --p-primary-600: var(--c-primary-hover);
+  --p-primary-700: var(--c-primary-deep);
+  --p-primary-800: var(--c-primary-deep);
+  --p-primary-900: var(--c-primary-tint-ink-strong);
+
+  /* ── Permukaan & konten ───────────────────────────────────── */
+  --p-content-background: var(--c-surface);
+  --p-content-border-color: var(--c-border);
+  --p-content-border-radius: var(--r-card);
+  --p-content-color: var(--c-ink);
+  --p-content-hover-background: var(--c-fill-row-hover);
+  --p-content-hover-color: var(--c-ink);
+
+  --p-overlay-popover-background: var(--c-surface);
+  --p-overlay-popover-border-color: var(--c-border);
+  --p-overlay-popover-border-radius: var(--r-card);
+  --p-overlay-popover-shadow: var(--sh-card);
+  --p-overlay-modal-background: var(--c-surface);
+  --p-overlay-modal-border-color: var(--c-border);
+  --p-overlay-modal-border-radius: var(--r-card);
+
+  --p-mask-background: oklch(0.25 0.015 255 / 0.45);
+
+  /* ── Teks ─────────────────────────────────────────────────── */
+  --p-text-color: var(--c-ink);
+  --p-text-hover-color: var(--c-ink);
+  --p-text-muted-color: var(--c-ink-muted);
+  --p-text-hover-muted-color: var(--c-ink-secondary);
+
+  /* ── Form ─────────────────────────────────────────────────── */
+  --p-form-field-background: var(--c-surface);
+  --p-form-field-disabled-background: var(--c-fill-table-head);
+  --p-form-field-border-color: var(--c-border);
+  --p-form-field-hover-border-color: var(--c-primary-tint-border);
+  --p-form-field-focus-border-color: var(--c-primary);
+  --p-form-field-invalid-border-color: var(--c-danger);
+  --p-form-field-border-radius: var(--r-control);
+  --p-form-field-color: var(--c-ink);
+  --p-form-field-placeholder-color: var(--c-ink-muted);
+  --p-form-field-invalid-placeholder-color: var(--c-danger);
+  --p-form-field-shadow: none;
+  --p-form-field-padding-x: var(--sp-3);
+  --p-form-field-padding-y: 0.55rem;
+  --p-form-field-focus-ring-width: 0;
+  --p-form-field-focus-ring-shadow: var(--focus-ring);
+
+  /* ── Focus ring global ────────────────────────────────────── */
+  --p-focus-ring-width: 2px;
+  --p-focus-ring-style: solid;
+  --p-focus-ring-color: var(--c-primary);
+  --p-focus-ring-offset: 0;
+  --p-focus-ring-shadow: var(--focus-ring);
+
+  /* ── Radius & border umum ─────────────────────────────────── */
+  --p-border-radius-none: 0;
+  --p-border-radius-xs: var(--r-kbd);
+  --p-border-radius-sm: var(--r-icon-tile);
+  --p-border-radius-md: var(--r-control);
+  --p-border-radius-lg: var(--r-input-lg);
+  --p-border-radius-xl: var(--r-card);
+
+  /* ── Warna status ─────────────────────────────────────────── */
+  --p-green-500: var(--c-success);
+  --p-green-600: var(--c-success);
+  --p-orange-500: var(--c-warning);
+  --p-orange-600: var(--c-warning-ink);
+  --p-red-500: var(--c-danger);
+  --p-red-600: var(--c-danger);
+
+  /* ── Netral (abu-abu) ─────────────────────────────────────── */
+  --p-surface-0: var(--c-surface);
+  --p-surface-50: var(--c-fill-table-head);
+  --p-surface-100: var(--c-border-row);
+  --p-surface-200: var(--c-border-inner);
+  --p-surface-300: var(--c-border);
+  --p-surface-400: var(--c-ink-muted);
+  --p-surface-500: var(--c-ink-muted);
+  --p-surface-600: var(--c-ink-secondary);
+  --p-surface-700: var(--c-ink-secondary);
+  --p-surface-800: var(--c-ink);
+  --p-surface-900: var(--c-ink);
+}
+
+/* ── Tabel ──────────────────────────────────────────────────── */
+:root {
+  --p-datatable-header-cell-background: var(--c-fill-table-head);
+  --p-datatable-header-cell-color: var(--c-ink-muted);
+  --p-datatable-header-cell-border-color: var(--c-border);
+  --p-datatable-body-cell-border-color: var(--c-border-row);
+  --p-datatable-row-background: var(--c-surface);
+  --p-datatable-row-color: var(--c-ink);
+  --p-datatable-row-hover-background: var(--c-fill-row-hover);
+  --p-datatable-footer-background: var(--c-fill-card-footer);
+  --p-datatable-header-cell-padding: 0 var(--sp-3);
+  --p-datatable-body-cell-padding: 0 var(--sp-3);
+}
+
+/* Head row 34px, body row 66px, label uppercase — sesuai design system */
+.p-datatable .p-datatable-thead > tr > th {
+  height: var(--table-head-h);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-table-head);
+  text-transform: uppercase;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  height: var(--table-row-h);
+}
+
+/* ── Tombol ─────────────────────────────────────────────────── */
+:root {
+  --p-button-border-radius: var(--r-control);
+  --p-button-padding-x: var(--sp-4);
+  --p-button-primary-background: var(--c-primary);
+  --p-button-primary-hover-background: var(--c-primary-hover);
+  --p-button-primary-active-background: var(--c-primary-deep);
+  --p-button-primary-border-color: var(--c-primary);
+  --p-button-primary-color: var(--c-ink-on-primary);
+  --p-button-secondary-background: var(--c-surface);
+  --p-button-secondary-border-color: var(--c-border);
+  --p-button-secondary-color: oklch(0.45 0.015 255);
+  --p-button-secondary-hover-background: var(--c-fill-row-hover);
+  --p-button-danger-background: var(--c-danger);
+  --p-button-danger-color: var(--c-ink-on-primary);
+}
+
+.p-button {
+  min-height: var(--btn-h);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+}
+
+/* Tombol Bayar di layar kasir: 68px + bevel */
+.p-button.btn-pay {
+  min-height: var(--btn-h-cashier);
+  font-weight: var(--fw-bold);
+  box-shadow: var(--sh-primary);
+}
+
+/* ── Badge / Tag ────────────────────────────────────────────── */
+:root {
+  --p-tag-border-radius: var(--r-pill);
+  --p-tag-font-size: var(--fs-overline);
+  --p-tag-font-weight: var(--fw-semibold);
+  --p-tag-warn-background: var(--c-warning-bg);
+  --p-tag-warn-color: var(--c-warning-ink);
+  --p-tag-success-background: oklch(0.95 0.04 152);
+  --p-tag-success-color: var(--c-success);
+  --p-tag-danger-background: var(--c-danger-hover-bg);
+  --p-tag-danger-color: var(--c-danger);
+}
+
+/* ── Toast ──────────────────────────────────────────────────── */
+:root {
+  --p-toast-border-radius: var(--r-card);
+  --p-toast-content-padding: var(--sp-3) var(--sp-4);
+  --p-toast-success-background: var(--c-surface);
+  --p-toast-success-border-color: var(--c-success);
+  --p-toast-warn-background: var(--c-surface);
+  --p-toast-warn-border-color: var(--c-warning-border);
+  --p-toast-error-background: var(--c-surface);
+  --p-toast-error-border-color: var(--c-danger);
+}
+
+/* ── Dialog & Drawer ────────────────────────────────────────── */
+:root {
+  --p-dialog-background: var(--c-surface);
+  --p-dialog-border-color: var(--c-border);
+  --p-dialog-border-radius: var(--r-card);
+  --p-dialog-header-padding: var(--pad-content);
+  --p-dialog-content-padding: var(--pad-content);
+  --p-dialog-title-font-size: var(--fs-title);
+  --p-dialog-title-font-weight: var(--fw-semibold);
+  --p-drawer-background: var(--c-surface);
+  --p-drawer-border-color: var(--c-border);
+}
+
+/* Drawer jadi bottom sheet di HP (PRD poin 7) */
+@media (max-width: 767px) {
+  .p-drawer-right,
+  .p-drawer-left {
+    width: 100% !important;
+  }
+  .p-dialog {
+    width: 100vw !important;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}
+
+/* ── Paginator ──────────────────────────────────────────────── */
+:root {
+  --p-paginator-background: transparent;
+  --p-paginator-nav-button-selected-background: var(--c-primary-tint-bg);
+  --p-paginator-nav-button-selected-color: var(--c-primary-tint-ink-strong);
+}
+
+/* ── Angka di komponen PrimeNG tetap mono ───────────────────── */
+.p-inputnumber-input,
+.p-datatable .col-money,
+.p-datatable .col-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}

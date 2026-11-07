@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global base styles. Values come from tokens.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans, 'IBM Plex Sans', system-ui, sans-serif);
+}

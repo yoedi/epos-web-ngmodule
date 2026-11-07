@@ -1,0 +1,188 @@
+/* ePOS — Design Tokens
+ * Sumber: design system terkunci dari Layar Kasir (Claude Design).
+ * INI SUMBER KEBENARAN. Jangan menulis nilai warna/ukuran langsung di komponen.
+ *
+ * Font dimuat di index.html:
+ * <link rel="preconnect" href="https://fonts.googleapis.com">
+ * <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ * <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+ */
+
+:root {
+  /* ── Font family ─────────────────────────────────────────── */
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* ── Font size & weight ──────────────────────────────────── */
+  --fs-overline: 10.5px; /* label uppercase, letter-spacing .08em */
+  --fs-kbd: 10.5px;
+  --fs-caption: 11px; /* SKU, teks sekunder (mono) */
+  --fs-body: 13.5px;
+  --fs-title: 14.5px; /* judul halaman & kartu */
+  --fs-row-name: 15px; /* nama barang di tabel */
+  --fs-total: 52px; /* TOTAL di layar kasir */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --ls-heading: -0.01em;
+  --ls-total: -0.035em;
+  --ls-overline: 0.08em;
+  --ls-table-head: 0.07em;
+
+  --lh-tight: 1;
+  --lh-body: 1.45;
+
+  /* ── Warna: primary ─────────────────────────────────────── */
+  --c-primary: oklch(0.5 0.16 254);
+  --c-primary-hover: oklch(0.45 0.16 254);
+  --c-primary-deep: oklch(0.42 0.15 254); /* bevel tombol utama */
+  --c-primary-tint-bg: oklch(0.962 0.018 254);
+  --c-primary-tint-border: oklch(0.9 0.04 254);
+  --c-primary-tint-ink: oklch(0.45 0.1 254);
+  --c-primary-tint-ink-strong: oklch(0.28 0.06 254);
+  --c-avatar-bg: oklch(0.94 0.03 254);
+
+  /* ── Warna: semantik ────────────────────────────────────── */
+  --c-success: oklch(0.55 0.13 152);
+
+  --c-warning: oklch(0.72 0.15 70); /* stok menipis */
+  --c-warning-bg: oklch(0.95 0.05 80);
+  --c-warning-border: oklch(0.87 0.08 78);
+  --c-warning-ink: oklch(0.45 0.1 70);
+
+  --c-danger: oklch(0.55 0.19 25);
+  --c-danger-hover-bg: oklch(0.96 0.02 25);
+
+  /* ── Warna: permukaan ───────────────────────────────────── */
+  --c-surface: oklch(0.991 0.003 255); /* kartu — bukan #fff murni */
+  --c-canvas: oklch(0.953 0.005 255); /* latar aplikasi */
+  --c-fill-table-head: oklch(0.966 0.005 255);
+  --c-fill-card-footer: oklch(0.968 0.004 255);
+  --c-fill-row-hover: oklch(0.96 0.006 255);
+
+  /* ── Warna: border ──────────────────────────────────────── */
+  --c-border: oklch(0.9 0.008 255); /* tegas / tepi kartu */
+  --c-border-inner: oklch(0.94 0.006 255);
+  --c-border-row: oklch(0.96 0.006 255);
+
+  /* ── Warna: teks ────────────────────────────────────────── */
+  --c-ink: oklch(0.25 0.015 255);
+  --c-ink-secondary: oklch(0.48 0.015 255);
+  --c-ink-muted: oklch(0.62 0.012 255); /* overline & label */
+  --c-ink-on-primary: #fff;
+
+  /* ── Spasi ──────────────────────────────────────────────── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 18px;
+  --pad-content: var(--sp-4) var(--sp-5); /* 16px 18px */
+  --gap-card: var(--sp-3); /* 12–16 */
+
+  /* ── Radius ─────────────────────────────────────────────── */
+  --r-card: 12px;
+  --r-input-lg: 10px;
+  --r-control: 9px;
+  --r-icon-tile: 8px;
+  --r-kbd: 4px;
+  --r-pill: 999px;
+
+  /* ── Shadow & focus ─────────────────────────────────────── */
+  --sh-card: 0 1px 2px rgba(20, 30, 50, 0.04);
+  --sh-primary: 0 2px 0 var(--c-primary-deep),
+    0 4px 12px oklch(0.5 0.16 254 / 0.18);
+  --focus-ring: 0 0 0 3px oklch(0.93 0.025 254);
+  --focus-border: var(--c-primary);
+
+  /* ── Ukuran komponen ────────────────────────────────────── */
+  --sidebar-w: 208px;
+  --sidebar-w-collapsed: 60px;
+  --header-h: 56px;
+  --footer-h: 34px;
+
+  --table-head-h: 34px;
+  --table-row-h: 66px;
+
+  --btn-h: 44px; /* tombol di luar kasir */
+  --btn-h-cashier: 68px; /* tombol Bayar */
+  --hit-min: 38px; /* target klik layar kasir */
+  --stepper-w: 126px;
+  --stepper-btn: 38px;
+
+  /* ── Breakpoint (acuan, dipakai di media query) ─────────── */
+  --bp-tablet: 768px;
+  --bp-laptop: 1280px;
+}
+
+/* ── Mode gelap ───────────────────────────────────────────────
+ * BELUM dari desain: varian mode gelap belum dibuat di Claude Design.
+ * Nilai di bawah adalah turunan sementara agar aplikasi tidak rusak
+ * di perangkat bermode gelap. Ganti setelah mockup gelap tersedia.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --c-surface: oklch(0.22 0.008 255);
+    --c-canvas: oklch(0.17 0.008 255);
+    --c-fill-table-head: oklch(0.25 0.008 255);
+    --c-fill-card-footer: oklch(0.24 0.008 255);
+    --c-fill-row-hover: oklch(0.27 0.008 255);
+
+    --c-border: oklch(0.33 0.01 255);
+    --c-border-inner: oklch(0.29 0.008 255);
+    --c-border-row: oklch(0.27 0.008 255);
+
+    --c-ink: oklch(0.95 0.008 255);
+    --c-ink-secondary: oklch(0.78 0.01 255);
+    --c-ink-muted: oklch(0.65 0.01 255);
+
+    --c-primary: oklch(0.65 0.15 254);
+    --c-primary-hover: oklch(0.7 0.15 254);
+    --c-primary-deep: oklch(0.52 0.15 254);
+    --c-primary-tint-bg: oklch(0.28 0.04 254);
+    --c-primary-tint-border: oklch(0.38 0.06 254);
+    --c-primary-tint-ink: oklch(0.8 0.09 254);
+    --c-primary-tint-ink-strong: oklch(0.92 0.05 254);
+    --c-avatar-bg: oklch(0.32 0.05 254);
+
+    --c-success: oklch(0.7 0.13 152);
+    --c-warning: oklch(0.78 0.14 70);
+    --c-warning-bg: oklch(0.3 0.05 75);
+    --c-warning-border: oklch(0.4 0.07 75);
+    --c-warning-ink: oklch(0.85 0.1 75);
+    --c-danger: oklch(0.65 0.18 25);
+    --c-danger-hover-bg: oklch(0.28 0.05 25);
+
+    --sh-card: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --focus-ring: 0 0 0 3px oklch(0.4 0.08 254);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* ── Dasar ────────────────────────────────────────────────── */
+body {
+  margin: 0;
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Semua angka wajib mono + tabular agar kolom harga rata */
+.num,
+.money,
+.sku,
+.invoice,
+.datetime,
+kbd {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
