@@ -97,6 +97,7 @@
     0 4px 12px oklch(0.5 0.16 254 / 0.18);
   --focus-ring: 0 0 0 3px oklch(0.93 0.025 254);
   --focus-border: var(--c-primary);
+  --border-w: 1px; /* tepi kartu & kontrol */
 
   /* ── Ukuran komponen ────────────────────────────────────── */
   --sidebar-w: 208px;
@@ -112,6 +113,16 @@
   --hit-min: 38px; /* target klik layar kasir */
   --stepper-w: 126px;
   --stepper-btn: 38px;
+
+  /* ── Login (dari mockup 7a, laptop 1366×768) ─────────────── */
+  --sp-6: 24px; /* padding kartu login */
+  --login-card-w: 400px;
+  --input-h-lg: 48px;
+  --btn-h-lg: 52px;
+  --logo-tile: 46px;
+  --fs-display: 20px; /* nama toko di login */
+  --fs-heading: 17px; /* judul kartu login */
+  --fs-input-lg: 15px;
 
   /* ── Breakpoint (acuan, dipakai di media query) ─────────── */
   --bp-tablet: 768px;

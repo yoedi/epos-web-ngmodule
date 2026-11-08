@@ -1,0 +1,90 @@
+<main class="login">
+  <div class="login__inner">
+    <header class="brand">
+      <span class="brand__tile" aria-hidden="true">{{ store.initials }}</span>
+      <div>
+        <h1 class="brand__name">{{ store.name }}</h1>
+        <p class="brand__address">{{ store.address }}</p>
+      </div>
+    </header>
+
+    <section class="card" aria-labelledby="login-title">
+      <h2 id="login-title" class="card__title">Masuk ke ePOS</h2>
+      <p class="card__subtitle">Gunakan akun yang diberikan pemilik toko</p>
+
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="field">
+          <label class="field__label" for="username">Username</label>
+          <div class="field__control">
+            <i class="pi pi-user field__icon" aria-hidden="true"></i>
+            <input
+              #usernameInput
+              pInputText
+              id="username"
+              class="field__input"
+              type="text"
+              formControlName="username"
+              autocomplete="username"
+              placeholder="Contoh: rina"
+              [readonly]="submitting"
+              [attr.aria-invalid]="fieldError('username') ? true : null"
+              [attr.aria-describedby]="fieldError('username') ? 'username-error' : null"
+            />
+          </div>
+          @if (fieldError('username'); as message) {
+            <p id="username-error" class="field__error">{{ message }}</p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="password">Password</label>
+          <div class="field__control">
+            <i class="pi pi-lock field__icon" aria-hidden="true"></i>
+            <input
+              pInputText
+              id="password"
+              class="field__input field__input--toggle"
+              formControlName="password"
+              autocomplete="current-password"
+              placeholder="Masukkan password"
+              [type]="showPassword ? 'text' : 'password'"
+              [readonly]="submitting"
+              [attr.aria-invalid]="fieldError('password') ? true : null"
+              [attr.aria-describedby]="fieldError('password') ? 'password-error' : null"
+            />
+            <button
+              type="button"
+              class="field__toggle"
+              [attr.aria-label]="showPassword ? 'Sembunyikan password' : 'Tampilkan password'"
+              [attr.aria-pressed]="showPassword"
+              (click)="togglePassword()"
+            >
+              <i class="pi" [class.pi-eye]="!showPassword" [class.pi-eye-slash]="showPassword" aria-hidden="true"></i>
+            </button>
+          </div>
+          @if (fieldError('password'); as message) {
+            <p id="password-error" class="field__error">{{ message }}</p>
+          }
+        </div>
+
+        <button
+          pButton
+          type="submit"
+          class="form__submit"
+          label="Masuk"
+          [loading]="submitting"
+          [disabled]="submitting"
+        ></button>
+
+        @if (errorMessage) {
+          <p class="form__error" role="alert">
+            <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+            <span>{{ errorMessage }}</span>
+          </p>
+        }
+      </form>
+    </section>
+
+    <p class="login__help">Lupa password? Hubungi pemilik toko.</p>
+  </div>
+</main>
