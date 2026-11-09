@@ -3,28 +3,51 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './core/auth/auth.guard';
 import { RoleGuard } from './core/auth/role.guard';
+import { ShellComponent } from './core/layout/shell/shell.component';
 import { PlaceholderComponent } from './placeholder/placeholder.component';
 
+const OWNER = { role: 'OWNER' };
+
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'kasir' },
   {
     path: 'login',
     loadChildren: () => import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
-  // Temporary placeholders until the cashier and dashboard features exist.
   {
-    path: 'kasir',
-    component: PlaceholderComponent,
+    // Every signed-in page renders inside the shell (sidebar, header, bottom nav).
+    path: '',
+    component: ShellComponent,
     canActivate: [AuthGuard],
-    data: { title: 'Kasir' },
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'kasir' },
+      // Placeholders until each feature module exists; swap for loadChildren.
+      { path: 'kasir', component: PlaceholderComponent, data: { title: 'Kasir' } },
+      {
+        path: 'dashboard',
+        component: PlaceholderComponent,
+        canActivate: [RoleGuard],
+        data: { title: 'Dashboard', ...OWNER },
+      },
+      { path: 'transaksi', component: PlaceholderComponent, data: { title: 'Riwayat Transaksi' } },
+      { path: 'produk', component: PlaceholderComponent, data: { title: 'Daftar Produk' } },
+      { path: 'kategori', component: PlaceholderComponent, data: { title: 'Kategori' } },
+      {
+        path: 'stok',
+        canActivate: [RoleGuard],
+        data: OWNER,
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: 'masuk' },
+          { path: 'masuk', component: PlaceholderComponent, data: { title: 'Stok Masuk' } },
+          {
+            path: 'penyesuaian',
+            component: PlaceholderComponent,
+            data: { title: 'Penyesuaian Stok' },
+          },
+        ],
+      },
+    ],
   },
-  {
-    path: 'dashboard',
-    component: PlaceholderComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { title: 'Dashboard', role: 'OWNER' },
-  },
-  { path: '**', redirectTo: 'kasir' },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

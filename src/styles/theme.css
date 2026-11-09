@@ -232,3 +232,11 @@
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
+
+/* Bottom sheet (menu "Lainnya" di HP): tinggi mengikuti isi, sudut atas membulat */
+.p-drawer.p-drawer-bottom {
+  height: auto;
+  max-height: calc(100dvh - var(--header-h));
+  border-radius: var(--r-card) var(--r-card) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}

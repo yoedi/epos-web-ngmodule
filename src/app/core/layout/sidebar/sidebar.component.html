@@ -1,0 +1,93 @@
+<aside class="sidebar" [class.sidebar--collapsed]="collapsed">
+  <div class="sidebar__brand">
+    <span class="sidebar__tile" aria-hidden="true">{{ storeInitials }}</span>
+    @if (!collapsed) {
+      <div class="sidebar__brand-text">
+        <span class="sidebar__app">ePOS</span>
+        <span class="sidebar__store">{{ storeName }}</span>
+      </div>
+      @if (canToggle) {
+        <button type="button" class="sidebar__toggle" aria-label="Ciutkan menu" (click)="toggleCollapsed.emit()">
+          <i class="pi pi-chevron-left" aria-hidden="true"></i>
+        </button>
+      }
+    }
+  </div>
+
+  <nav class="sidebar__nav" aria-label="Menu utama">
+    @if (!collapsed) {
+      <p class="sidebar__overline" aria-hidden="true">Menu</p>
+    }
+    <ul class="nav">
+      @for (item of items; track item.label; let i = $index) {
+        <li>
+          @if (item.children && !collapsed) {
+            <button
+              type="button"
+              class="nav__item"
+              [class.nav__item--group-active]="isActive(item)"
+              [attr.aria-expanded]="isExpanded(item)"
+              [attr.aria-controls]="'nav-group-' + i"
+              (click)="toggleGroup(item)"
+            >
+              <i class="pi {{ item.icon }} nav__icon" aria-hidden="true"></i>
+              <span class="nav__label">{{ item.label }}</span>
+              <i
+                class="pi nav__chevron"
+                [class.pi-chevron-down]="isExpanded(item)"
+                [class.pi-chevron-right]="!isExpanded(item)"
+                aria-hidden="true"
+              ></i>
+            </button>
+            @if (isExpanded(item)) {
+              <ul class="nav__sub" [id]="'nav-group-' + i">
+                @for (child of item.children; track child.label) {
+                  <li>
+                    <a
+                      class="nav__item nav__item--sub"
+                      [routerLink]="child.link"
+                      routerLinkActive="nav__item--active"
+                      ariaCurrentWhenActive="page"
+                      >{{ child.label }}</a
+                    >
+                  </li>
+                }
+              </ul>
+            }
+          } @else {
+            <!-- Leaf, or a collapsed group that jumps to its first page. -->
+            <a
+              class="nav__item"
+              [routerLink]="entryLink(item)"
+              [class.nav__item--active]="isActive(item)"
+              [attr.aria-current]="isActive(item) ? 'page' : null"
+              [attr.aria-label]="collapsed ? item.label : null"
+              [attr.title]="collapsed ? item.label : null"
+            >
+              <i class="pi {{ item.icon }} nav__icon" aria-hidden="true"></i>
+              @if (!collapsed) {
+                <span class="nav__label">{{ item.label }}</span>
+              }
+            </a>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="sidebar__footer">
+    @if (collapsed && canToggle) {
+      <button type="button" class="sidebar__toggle" aria-label="Lebarkan menu" (click)="toggleCollapsed.emit()">
+        <i class="pi pi-chevron-right" aria-hidden="true"></i>
+      </button>
+    } @else if (!collapsed) {
+      <span class="num">{{ version }}</span>
+    }
+    @if (connection$ | async; as connection) {
+      <span class="sidebar__status" [class.sidebar__status--offline]="!connection.online" [attr.title]="connection.label">
+        <span class="sidebar__dot" aria-hidden="true"></span>
+        <span [class.sr-only]="collapsed">{{ connection.label }}</span>
+      </span>
+    }
+  </div>
+</aside>

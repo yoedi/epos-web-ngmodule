@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
 
 const ANGULAR_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
-const PRIMENG_MODULES = [ButtonModule, InputTextModule, ToastModule];
+const PRIMENG_MODULES = [ButtonModule, InputTextModule, SkeletonModule, ToastModule];
 
 /**
  * Shared UI building blocks for feature modules.

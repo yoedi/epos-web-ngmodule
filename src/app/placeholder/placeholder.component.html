@@ -1,8 +1,4 @@
-<main class="placeholder">
+<section class="placeholder">
   <h1 class="placeholder__title">{{ title }}</h1>
   <p class="placeholder__text">Halaman {{ title }} belum dibuat.</p>
-  @if (user$ | async; as user) {
-    <p class="placeholder__text">Masuk sebagai {{ user.name }} ({{ roleLabel[user.role] }})</p>
-  }
-  <button pButton type="button" severity="secondary" label="Keluar" icon="pi pi-sign-out" (click)="logout()"></button>
-</main>
+</section>

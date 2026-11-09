@@ -1,0 +1,51 @@
+<header class="header">
+  @if (store.status === 'ready') {
+    <!-- Phone only: the sidebar (and its logo) is hidden there. -->
+    <span class="header__tile" aria-hidden="true">{{ initials(store.data.storeName) }}</span>
+  }
+
+  <div class="header__store">
+    @if (store.status === 'ready') {
+      <p class="header__name">{{ store.data.storeName }}</p>
+      <p class="header__sub header__address">{{ store.data.address }}</p>
+    } @else if (store.status === 'loading') {
+      <span class="sr-only" role="status">Memuat info toko</span>
+      <p-skeleton width="16ch" height="1em" />
+      <span class="header__address"><p-skeleton width="24ch" height="0.9em" /></span>
+    } @else {
+      <p class="header__name">ePOS</p>
+      <p class="header__sub header__error" role="alert">
+        Info toko gagal dimuat.
+        <button type="button" class="header__retry" (click)="retryStore.emit()">Coba lagi</button>
+      </p>
+    }
+    @if (now$ | async; as now) {
+      <time class="header__sub header__clock--compact datetime" [attr.datetime]="now | date: 'yyyy-MM-ddTHH:mm'">
+        {{ now | date: 'd MMM y, HH:mm' }}
+      </time>
+    }
+  </div>
+
+  @if (now$ | async; as now) {
+    <time class="header__clock datetime" [attr.datetime]="now | date: 'yyyy-MM-ddTHH:mm'">
+      {{ now | date: 'd MMM y, HH:mm' }}
+    </time>
+  }
+
+  <span class="header__spacer"></span>
+
+  @if (user) {
+    <div class="header__user">
+      <span class="header__avatar" aria-hidden="true">{{ initials(user.name) }}</span>
+      <span class="header__user-text">
+        <span class="header__user-name">{{ user.name }}</span>
+        <span class="header__user-role">{{ roleLabel[user.role] }}</span>
+      </span>
+    </div>
+  }
+
+  <button type="button" class="header__logout" aria-label="Keluar" (click)="logout.emit()">
+    <i class="pi pi-sign-out" aria-hidden="true"></i>
+    <span class="header__logout-label" aria-hidden="true">Keluar</span>
+  </button>
+</header>

@@ -97,6 +97,7 @@
     0 4px 12px oklch(0.5 0.16 254 / 0.18);
   --focus-ring: 0 0 0 3px oklch(0.93 0.025 254);
   --focus-border: var(--c-primary);
+  --focus-outline: 2px solid var(--focus-border); /* kontrol kustom (bukan PrimeNG) */
   --border-w: 1px; /* tepi kartu & kontrol */
 
   /* ── Ukuran komponen ────────────────────────────────────── */
@@ -104,6 +105,14 @@
   --sidebar-w-collapsed: 60px;
   --header-h: 56px;
   --footer-h: 34px;
+
+  /* Shell (dari mockup Admin/Kasir Shell & Versi HP) */
+  --nav-item-h: 40px; /* item menu sidebar */
+  --logo-tile-sm: 30px; /* logo toko di sidebar & header HP */
+  --avatar: 28px; /* inisial pengguna di pill header */
+  --icon-nav: 16px; /* ikon menu */
+  --bottom-nav-h: 60px; /* navigasi bawah HP */
+  --dot-status: 7px; /* titik status Online */
 
   --table-head-h: 34px;
   --table-row-h: 66px;

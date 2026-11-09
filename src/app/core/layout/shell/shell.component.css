@@ -1,0 +1,50 @@
+/* Laptop & tablet: sidebar | header over content. Phone: header, content, bottom nav. */
+.shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: var(--header-h) minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  background: var(--c-canvas);
+}
+
+.shell__sidebar {
+  grid-column: 1;
+  grid-row: 1 / -1;
+}
+
+.shell__header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.shell__content {
+  grid-column: 2;
+  grid-row: 2;
+  overflow: auto;
+}
+
+.shell__bottom-nav {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .shell__sidebar {
+    display: none;
+  }
+
+  .shell__header,
+  .shell__content {
+    grid-column: 1;
+  }
+
+  .shell__bottom-nav {
+    display: block;
+    grid-row: 3;
+  }
+}

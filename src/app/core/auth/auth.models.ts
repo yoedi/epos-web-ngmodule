@@ -1,5 +1,11 @@
 export type Role = 'OWNER' | 'CASHIER';
 
+/** Display name of each role (PRD section 6). */
+export const ROLE_LABEL: Record<Role, string> = {
+  OWNER: 'Pemilik',
+  CASHIER: 'Kasir',
+};
+
 /** Application model of the signed-in user. */
 export interface User {
   id: number;

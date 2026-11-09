@@ -1,0 +1,114 @@
+.bottom-nav {
+  background: var(--c-surface);
+  border-top: var(--border-w) solid var(--c-border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav__list {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  width: 100%;
+  min-height: var(--bottom-nav-h);
+  padding: var(--sp-1);
+  border: 0;
+  background: none;
+  color: var(--c-ink-muted);
+  font: inherit;
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bottom-nav__item .pi {
+  font-size: var(--fs-row-name);
+}
+
+.bottom-nav__item--active {
+  color: var(--c-primary);
+}
+
+/* "Lainnya" sheet (rendered inside p-drawer, still in this component's view) */
+.more__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  margin-bottom: var(--sp-2);
+  border-bottom: var(--border-w) solid var(--c-border-inner);
+}
+
+.more__avatar {
+  display: grid;
+  place-items: center;
+  width: var(--btn-h);
+  height: var(--btn-h);
+  border-radius: var(--r-pill);
+  background: var(--c-avatar-bg);
+  color: var(--c-primary-tint-ink);
+  font-weight: var(--fw-bold);
+}
+
+.more__profile-text {
+  display: grid;
+}
+
+.more__name {
+  font-weight: var(--fw-semibold);
+}
+
+.more__role {
+  color: var(--c-ink-secondary);
+  font-size: var(--fs-caption);
+}
+
+.more__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.more__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: var(--btn-h);
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--r-control);
+  background: none;
+  color: var(--c-ink);
+  font: inherit;
+  font-size: var(--fs-title);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.more__item--active {
+  background: var(--c-primary-tint-bg);
+  color: var(--c-primary-tint-ink-strong);
+}
+
+.more__item--danger {
+  color: var(--c-danger);
+}
+
+.bottom-nav__item:focus-visible,
+.more__item:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}

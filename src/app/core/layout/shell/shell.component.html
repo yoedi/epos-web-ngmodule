@@ -1,0 +1,32 @@
+@if (store$ | async; as store) {
+  <div class="shell">
+    <app-sidebar
+      class="shell__sidebar"
+      [items]="(sidebarMenu$ | async) ?? []"
+      [collapsed]="(sidebarCollapsed$ | async) ?? false"
+      [canToggle]="!(isTablet$ | async)"
+      [storeName]="store.status === 'ready' ? store.data.storeName : null"
+      (toggleCollapsed)="toggleSidebar()"
+    />
+
+    <app-header
+      class="shell__header"
+      [store]="store"
+      [user]="user$ | async"
+      (retryStore)="retryStore()"
+      (logout)="logout()"
+    />
+
+    <main class="shell__content">
+      <router-outlet />
+    </main>
+
+    <app-bottom-nav
+      class="shell__bottom-nav"
+      [items]="(bottomNav$ | async) ?? []"
+      [moreItems]="(moreMenu$ | async) ?? []"
+      [user]="user$ | async"
+      (logout)="logout()"
+    />
+  </div>
+}

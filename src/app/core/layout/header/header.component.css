@@ -1,0 +1,190 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  height: 100%;
+  padding: 0 var(--sp-5);
+  background: var(--c-surface);
+  border-bottom: var(--border-w) solid var(--c-border);
+}
+
+.header__tile,
+.header__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-icon-tile);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-bold);
+}
+
+.header__tile {
+  display: none;
+  width: var(--logo-tile-sm);
+  height: var(--logo-tile-sm);
+  background: var(--c-primary);
+  color: var(--c-ink-on-primary);
+}
+
+.header__store {
+  display: grid;
+  gap: var(--sp-1);
+  min-width: 0;
+  line-height: var(--lh-tight);
+}
+
+.header__name {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-heading);
+}
+
+.header__sub {
+  margin: 0;
+  color: var(--c-ink-secondary);
+  font-size: var(--fs-caption);
+}
+
+.header__name,
+.header__sub {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header__error {
+  color: var(--c-danger);
+}
+
+.header__retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-primary);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.header__clock {
+  padding-left: var(--sp-4);
+  border-left: var(--border-w) solid var(--c-border);
+  color: var(--c-ink-secondary);
+}
+
+.header__clock--compact {
+  display: none;
+}
+
+.header__spacer {
+  flex: 1;
+}
+
+.header__user {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3) var(--sp-1) var(--sp-1);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-pill);
+}
+
+.header__avatar {
+  width: var(--avatar);
+  height: var(--avatar);
+  border-radius: var(--r-pill);
+  background: var(--c-avatar-bg);
+  color: var(--c-primary-tint-ink);
+}
+
+.header__user-text {
+  display: grid;
+  line-height: var(--lh-tight);
+  gap: var(--sp-1);
+}
+
+.header__user-name {
+  font-weight: var(--fw-semibold);
+}
+
+.header__user-role {
+  color: var(--c-ink-secondary);
+  font-size: var(--fs-caption);
+}
+
+.header__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-width: var(--hit-min);
+  min-height: var(--hit-min);
+  padding: 0 var(--sp-3);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink-secondary);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.header__logout:hover {
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger);
+}
+
+.header__retry:focus-visible,
+.header__logout:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+/* Tablet: date under the store name, icon-only Keluar */
+@media (max-width: 1279.98px) {
+  .header__address,
+  .header__clock,
+  .header__logout-label {
+    display: none;
+  }
+
+  .header__clock--compact {
+    display: block;
+  }
+
+  .header__logout {
+    padding: 0;
+  }
+}
+
+/* Phone: logo + store, avatar only; Keluar moves to the "Lainnya" sheet */
+@media (max-width: 767.98px) {
+  .header {
+    gap: var(--sp-3);
+    min-height: var(--header-h);
+    padding: var(--sp-2) var(--sp-4);
+  }
+
+  .header__tile {
+    display: grid;
+  }
+
+  .header__user {
+    padding: 0;
+    border: 0;
+  }
+
+  .header__user-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .header__logout {
+    display: none;
+  }
+}

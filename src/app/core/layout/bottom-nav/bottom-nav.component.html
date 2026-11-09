@@ -1,0 +1,64 @@
+<nav class="bottom-nav" aria-label="Menu utama">
+  <ul class="bottom-nav__list">
+    @for (item of items; track item.label) {
+      <li>
+        <a
+          class="bottom-nav__item"
+          [routerLink]="item.link"
+          routerLinkActive="bottom-nav__item--active"
+          ariaCurrentWhenActive="page"
+        >
+          <i class="pi {{ item.icon }}" aria-hidden="true"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    }
+    <li>
+      <button
+        type="button"
+        class="bottom-nav__item"
+        aria-haspopup="dialog"
+        [attr.aria-expanded]="moreOpen"
+        (click)="openMore()"
+      >
+        <i class="pi pi-ellipsis-h" aria-hidden="true"></i>
+        <span>Lainnya</span>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<p-drawer [(visible)]="moreOpen" position="bottom" header="Lainnya" ariaCloseLabel="Tutup">
+  @if (user) {
+    <div class="more__profile">
+      <span class="more__avatar" aria-hidden="true">{{ initials(user.name) }}</span>
+      <span class="more__profile-text">
+        <span class="more__name">{{ user.name }}</span>
+        <span class="more__role">{{ roleLabel[user.role] }}</span>
+      </span>
+    </div>
+  }
+
+  <ul class="more__list">
+    @for (item of moreItems; track item.label) {
+      <li>
+        <a
+          class="more__item"
+          [routerLink]="item.link"
+          routerLinkActive="more__item--active"
+          ariaCurrentWhenActive="page"
+          (click)="closeMore()"
+        >
+          <i class="pi {{ item.icon }}" aria-hidden="true"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    }
+    <li>
+      <button type="button" class="more__item more__item--danger" (click)="onLogout()">
+        <i class="pi pi-sign-out" aria-hidden="true"></i>
+        <span>Keluar</span>
+      </button>
+    </li>
+  </ul>
+</p-drawer>
