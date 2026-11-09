@@ -1,0 +1,43 @@
+:host {
+  display: inline-flex;
+  gap: var(--sp-1);
+}
+
+.action {
+  display: grid;
+  place-items: center;
+  width: var(--btn-icon);
+  height: var(--btn-icon);
+  padding: 0;
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink-secondary);
+  cursor: pointer;
+}
+
+.action:hover {
+  background: var(--c-primary-tint-bg);
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+}
+
+.action:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+.action--activate {
+  color: var(--c-success);
+}
+
+@media (max-width: 767.98px) {
+  :host {
+    gap: var(--sp-2);
+  }
+
+  .action {
+    width: var(--btn-h);
+    height: var(--btn-h);
+  }
+}

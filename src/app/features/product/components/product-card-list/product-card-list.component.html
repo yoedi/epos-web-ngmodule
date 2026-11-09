@@ -1,0 +1,47 @@
+@if (loading) {
+  <div class="cards" aria-hidden="true">
+    @for (item of skeletonCards; track item) {
+      <div class="card">
+        <p-skeleton width="60%" height="var(--fs-row-name)" />
+        <p-skeleton width="40%" height="var(--fs-caption)" />
+        <p-skeleton width="50%" height="var(--btn-h)" />
+      </div>
+    }
+  </div>
+} @else {
+  <ul class="cards">
+    @for (product of products; track product.id) {
+      <li class="card" [class.card--inactive]="!product.isActive">
+        <div class="card__top">
+          <div class="card__title">
+            <p class="card__name">{{ product.name }}</p>
+            <p class="card__meta">
+              <span class="num">{{ product.sku }}</span> · {{ product.category.name }}
+            </p>
+          </div>
+          <div class="card__badges">
+            <app-stock-badge [status]="product.stockStatus" [qty]="product.stock" />
+            @if (!product.isActive) {
+              <span class="card__inactive">Nonaktif</span>
+            }
+          </div>
+        </div>
+        <div class="card__bottom">
+          <div>
+            <p class="card__price num">{{ product.sellPrice | rupiah }}</p>
+            @if (product.costPrice !== null) {
+              <p class="card__cost num">modal {{ product.costPrice | rupiah }}</p>
+            }
+          </div>
+          @if (canManage) {
+            <app-product-actions
+              [product]="product"
+              (edit)="edit.emit($event)"
+              (toggleStatus)="toggleStatus.emit($event)"
+            />
+          }
+        </div>
+      </li>
+    }
+  </ul>
+}

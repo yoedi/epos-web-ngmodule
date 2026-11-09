@@ -1,0 +1,231 @@
+@if (vm$ | async; as vm) {
+  <div class="page" [class.page--manage]="vm.canManage">
+    <header class="page__header">
+      <h1 class="page__title">Daftar Produk</h1>
+      @if (vm.state.status === 'ready') {
+        <span class="page__count num">{{ vm.state.page.totalElements }} produk</span>
+      }
+    </header>
+
+    <section class="toolbar" aria-label="Pencarian dan filter" [formGroup]="filters">
+      <div class="toolbar__search">
+        <label class="sr-only" for="product-search">Cari produk</label>
+        <i class="pi pi-search toolbar__search-icon" aria-hidden="true"></i>
+        <input
+          pInputText
+          id="product-search"
+          class="toolbar__search-input"
+          type="search"
+          autocomplete="off"
+          placeholder="Cari nama, SKU, atau barcode"
+          formControlName="search"
+        />
+      </div>
+
+      <div class="toolbar__select">
+        <p-select
+          styleClass="select-block select-filter"
+          ariaLabel="Filter kategori"
+          placeholder="Semua Kategori"
+          formControlName="categoryId"
+          optionLabel="name"
+          optionValue="id"
+          [options]="vm.categoryOptions"
+        />
+      </div>
+      <div class="toolbar__select">
+        <p-select
+          styleClass="select-block select-filter"
+          ariaLabel="Filter status"
+          placeholder="Semua Status"
+          formControlName="status"
+          optionLabel="label"
+          optionValue="value"
+          [options]="statusOptions"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="toolbar__filter"
+        aria-label="Filter"
+        [class.toolbar__filter--active]="vm.chips.length > 0"
+        (click)="filterSheetOpen = true"
+      >
+        <i class="pi pi-filter" aria-hidden="true"></i>
+        @if (vm.chips.length > 0) {
+          <span class="toolbar__filter-count num">{{ vm.chips.length }}</span>
+        }
+      </button>
+
+      @if (vm.canManage) {
+        <button
+          pButton
+          type="button"
+          class="toolbar__add"
+          icon="pi pi-plus"
+          label="Tambah Produk"
+          (click)="openCreate()"
+        ></button>
+      }
+    </section>
+
+    @if (vm.chips.length > 0) {
+      <ul class="chips">
+        @for (chip of vm.chips; track chip.filter) {
+          <li>
+            <button
+              type="button"
+              class="chip"
+              [attr.aria-label]="'Hapus filter ' + chip.label"
+              (click)="removeChip(chip)"
+            >
+              {{ chip.label }} <i class="pi pi-times chip__icon" aria-hidden="true"></i>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+
+    <section class="results" aria-live="polite">
+      @if (vm.state.status === 'error') {
+        <app-empty-state
+          icon="pi-exclamation-triangle"
+          title="Gagal memuat produk"
+          [danger]="true"
+          [description]="vm.state.message"
+        >
+          <button pButton type="button" label="Coba lagi" icon="pi pi-refresh" (click)="retry()"></button>
+        </app-empty-state>
+      } @else if (vm.state.status === 'ready' && vm.state.page.totalElements === 0) {
+        @if (vm.hasFilter) {
+          <app-empty-state
+            icon="pi-search"
+            title="Produk tidak ditemukan"
+            description="Coba kata kunci atau filter lain."
+          >
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              [outlined]="true"
+              label="Hapus filter"
+              (click)="clearFilters()"
+            ></button>
+          </app-empty-state>
+        } @else if (vm.canManage) {
+          <app-empty-state icon="pi-box" title="Belum ada produk. Tambahkan produk pertama Anda">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-plus"
+              label="Tambah Produk"
+              (click)="openCreate()"
+            ></button>
+          </app-empty-state>
+        } @else {
+          <app-empty-state icon="pi-box" title="Belum ada produk." />
+        }
+      } @else {
+        <app-product-table
+          class="results__table"
+          [products]="vm.state.status === 'ready' ? vm.state.page.content : []"
+          [loading]="vm.state.status === 'loading'"
+          [canManage]="vm.canManage"
+          [sort]="vm.query.sort"
+          (sortChange)="changeSort($event)"
+          (edit)="openEdit($event)"
+          (toggleStatus)="toggleStatus($event)"
+        />
+        <app-product-card-list
+          class="results__cards"
+          [products]="vm.state.status === 'ready' ? vm.state.page.content : []"
+          [loading]="vm.state.status === 'loading'"
+          [canManage]="vm.canManage"
+          (edit)="openEdit($event)"
+          (toggleStatus)="toggleStatus($event)"
+        />
+        @if (vm.state.status === 'ready') {
+          <app-pagination
+            class="results__pagination"
+            itemLabel="produk"
+            [page]="vm.state.page.page"
+            [size]="vm.state.page.size"
+            [totalElements]="vm.state.page.totalElements"
+            [totalPages]="vm.state.page.totalPages"
+            (pageChange)="changePage($event)"
+          />
+        }
+      }
+    </section>
+  </div>
+
+  <!-- Phone: the filter selects fold into a bottom sheet (PRD section 7). -->
+  <p-drawer position="bottom" header="Filter" [(visible)]="filterSheetOpen">
+    @if (filterSheetOpen) {
+      <div class="sheet" [formGroup]="filters">
+        <div class="sheet__field">
+          <label id="sheet-category-label" class="sheet__label">Kategori</label>
+          <p-select
+            styleClass="select-block select-filter"
+            appendTo="body"
+            ariaLabelledBy="sheet-category-label"
+            placeholder="Semua Kategori"
+            formControlName="categoryId"
+            optionLabel="name"
+            optionValue="id"
+            [options]="vm.categoryOptions"
+          />
+        </div>
+        <div class="sheet__field">
+          <label id="sheet-status-label" class="sheet__label">Status</label>
+          <p-select
+            styleClass="select-block select-filter"
+            appendTo="body"
+            ariaLabelledBy="sheet-status-label"
+            placeholder="Semua Status"
+            formControlName="status"
+            optionLabel="label"
+            optionValue="value"
+            [options]="statusOptions"
+          />
+        </div>
+        <button pButton type="button" label="Terapkan" (click)="filterSheetOpen = false"></button>
+      </div>
+    }
+  </p-drawer>
+
+  <p-drawer
+    position="right"
+    [header]="editing ? 'Edit Produk' : 'Tambah Produk'"
+    [style]="{ width: 'var(--drawer-w)' }"
+    [visible]="formOpen"
+    [showCloseIcon]="!formBusy"
+    [closeOnEscape]="!formBusy"
+    [dismissible]="!formBusy"
+    (visibleChange)="!$event && closeForm()"
+    (onShow)="productForm?.focusFirstField()"
+  >
+    @if (formOpen) {
+      <app-product-form
+        [product]="editing"
+        [categories]="vm.categories"
+        (saved)="handleSaved($event)"
+        (cancelled)="closeForm()"
+        (submittingChange)="formBusy = $event"
+      />
+    }
+  </p-drawer>
+
+  <app-confirm-dialog
+    title="Nonaktifkan produk?"
+    confirmLabel="Nonaktifkan"
+    [danger]="true"
+    [visible]="toDeactivate !== null"
+    [busy]="statusBusy"
+    (confirmed)="confirmDeactivate()"
+    (cancelled)="cancelDeactivate()"
+  >
+    <p class="confirm-text">{{ toDeactivate?.name }} tidak bisa dijual selama nonaktif.</p>
+  </app-confirm-dialog>
+}

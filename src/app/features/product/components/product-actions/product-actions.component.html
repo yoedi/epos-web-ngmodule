@@ -1,0 +1,25 @@
+<button
+  type="button"
+  class="action"
+  title="Edit"
+  [attr.aria-label]="'Edit ' + product.name"
+  (click)="edit.emit(product)"
+>
+  <i class="pi pi-pencil" aria-hidden="true"></i>
+</button>
+<!-- One element for both states, so keyboard focus survives the status change. -->
+<button
+  type="button"
+  class="action"
+  [class.action--activate]="!product.isActive"
+  [title]="product.isActive ? 'Nonaktifkan' : 'Aktifkan'"
+  [attr.aria-label]="(product.isActive ? 'Nonaktifkan ' : 'Aktifkan ') + product.name"
+  (click)="toggleStatus.emit(product)"
+>
+  <i
+    class="pi"
+    [class.pi-ban]="product.isActive"
+    [class.pi-check]="!product.isActive"
+    aria-hidden="true"
+  ></i>
+</button>

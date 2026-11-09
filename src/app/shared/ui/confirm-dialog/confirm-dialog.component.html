@@ -1,0 +1,33 @@
+<p-dialog
+  [visible]="visible"
+  [header]="title"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="!busy"
+  [closeOnEscape]="!busy"
+  [style]="dialogStyle"
+  (visibleChange)="handleVisibleChange($event)"
+>
+  <ng-content />
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [outlined]="true"
+      [label]="cancelLabel"
+      [disabled]="busy"
+      (click)="cancelled.emit()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      [severity]="danger ? 'danger' : 'primary'"
+      [label]="confirmLabel"
+      [loading]="busy"
+      [disabled]="busy"
+      (click)="confirmed.emit()"
+    ></button>
+  </ng-template>
+</p-dialog>

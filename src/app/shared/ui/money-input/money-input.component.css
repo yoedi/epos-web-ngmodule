@@ -1,0 +1,25 @@
+.money {
+  position: relative;
+}
+
+.money__prefix {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: var(--sp-3);
+  transform: translateY(-50%);
+  color: var(--c-ink-muted);
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.money__input {
+  width: 100%;
+  min-height: var(--btn-h);
+  padding-inline-start: calc(var(--sp-3) + var(--sp-6));
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.money--invalid .money__input {
+  border-color: var(--c-danger);
+}

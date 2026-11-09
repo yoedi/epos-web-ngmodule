@@ -47,6 +47,9 @@
 
   /* ── Warna: semantik ────────────────────────────────────── */
   --c-success: oklch(0.55 0.13 152);
+  --c-success-bg: oklch(0.95 0.04 152); /* chip stok aman (mockup 4a) */
+  --c-success-border: oklch(0.87 0.07 152);
+  --c-success-ink: oklch(0.4 0.1 152);
 
   --c-warning: oklch(0.72 0.15 70); /* stok menipis */
   --c-warning-bg: oklch(0.95 0.05 80);
@@ -55,6 +58,8 @@
 
   --c-danger: oklch(0.55 0.19 25);
   --c-danger-hover-bg: oklch(0.96 0.02 25);
+  --c-danger-border: oklch(0.88 0.06 25); /* chip stok habis (mockup 4a) */
+  --c-danger-ink: oklch(0.45 0.16 25);
 
   /* ── Warna: permukaan ───────────────────────────────────── */
   --c-surface: oklch(0.991 0.003 255); /* kartu — bukan #fff murni */
@@ -133,6 +138,21 @@
   --fs-heading: 17px; /* judul kartu login */
   --fs-input-lg: 15px;
 
+  /* ── Daftar Produk (dari mockup 4a & 9b) ─────────────────── */
+  --fs-money: 14px; /* harga di baris tabel */
+  --btn-icon: 34px; /* tombol ikon di tabel admin */
+  --pill-h: 22px;
+  --col-sku: 76px;
+  --col-name-min: 140px;
+  --col-category: 120px;
+  --col-money: 104px;
+  --col-stock: 112px;
+  --col-status: 76px;
+  --col-actions: 72px;
+  --toolbar-select-w: 200px;
+  --drawer-w: 440px; /* form tambah/edit */
+  --dialog-w-sm: 400px; /* dialog konfirmasi */
+
   /* ── Breakpoint (acuan, dipakai di media query) ─────────── */
   --bp-tablet: 768px;
   --bp-laptop: 1280px;
@@ -169,12 +189,17 @@
     --c-avatar-bg: oklch(0.32 0.05 254);
 
     --c-success: oklch(0.7 0.13 152);
+    --c-success-bg: oklch(0.3 0.05 152);
+    --c-success-border: oklch(0.4 0.07 152);
+    --c-success-ink: oklch(0.85 0.1 152);
     --c-warning: oklch(0.78 0.14 70);
     --c-warning-bg: oklch(0.3 0.05 75);
     --c-warning-border: oklch(0.4 0.07 75);
     --c-warning-ink: oklch(0.85 0.1 75);
     --c-danger: oklch(0.65 0.18 25);
     --c-danger-hover-bg: oklch(0.28 0.05 25);
+    --c-danger-border: oklch(0.4 0.08 25);
+    --c-danger-ink: oklch(0.85 0.1 25);
 
     --sh-card: 0 1px 2px rgba(0, 0, 0, 0.3);
     --focus-ring: 0 0 0 3px oklch(0.4 0.08 254);

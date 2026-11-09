@@ -150,6 +150,9 @@
   --p-button-secondary-border-color: var(--c-border);
   --p-button-secondary-color: oklch(0.45 0.015 255);
   --p-button-secondary-hover-background: var(--c-fill-row-hover);
+  --p-button-outlined-secondary-border-color: var(--c-border);
+  --p-button-outlined-secondary-color: var(--p-button-secondary-color);
+  --p-button-outlined-secondary-hover-background: var(--c-fill-row-hover);
   --p-button-danger-background: var(--c-danger);
   --p-button-danger-color: var(--c-ink-on-primary);
 }
@@ -157,6 +160,7 @@
 .p-button {
   min-height: var(--btn-h);
   font-family: var(--font-sans);
+  font-size: var(--fs-title);
   font-weight: var(--fw-semibold);
 }
 
@@ -203,6 +207,7 @@
   --p-dialog-title-font-weight: var(--fw-semibold);
   --p-drawer-background: var(--c-surface);
   --p-drawer-border-color: var(--c-border);
+  --p-drawer-title-font-size: var(--fs-heading);
 }
 
 /* Drawer jadi bottom sheet di HP (PRD poin 7) */
@@ -239,4 +244,22 @@
   max-height: calc(100dvh - var(--header-h));
   border-radius: var(--r-card) var(--r-card) 0 0;
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Filter: "Semua ..." adalah nilai yang sedang berlaku, bukan placeholder (mockup 4a) */
+.p-select.select-filter .p-select-label.p-placeholder {
+  color: var(--c-ink);
+}
+
+/* Input & select mengikuti ukuran body (bawaan Aura 1rem) */
+.p-inputtext {
+  font-size: var(--fs-body);
+}
+
+/* Select selebar wadah dan setinggi tombol (toolbar & form, bukan layar kasir) */
+.p-select.select-block {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--btn-h);
 }

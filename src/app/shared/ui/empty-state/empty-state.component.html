@@ -1,0 +1,10 @@
+<div class="empty" [attr.role]="danger ? 'alert' : null">
+  <span class="empty__icon" [class.empty__icon--danger]="danger" aria-hidden="true">
+    <i class="pi" [ngClass]="icon"></i>
+  </span>
+  <p class="empty__title">{{ title }}</p>
+  @if (description) {
+    <p class="empty__description">{{ description }}</p>
+  }
+  <ng-content />
+</div>

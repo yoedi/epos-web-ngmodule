@@ -29,7 +29,12 @@ const routes: Routes = [
         data: { title: 'Dashboard', ...OWNER },
       },
       { path: 'transaksi', component: PlaceholderComponent, data: { title: 'Riwayat Transaksi' } },
-      { path: 'produk', component: PlaceholderComponent, data: { title: 'Daftar Produk' } },
+      {
+        // Both roles: the owner manages, the cashier only views (PRD section 6).
+        path: 'produk',
+        loadChildren: () =>
+          import('./features/product/product.module').then((m) => m.ProductModule),
+      },
       { path: 'kategori', component: PlaceholderComponent, data: { title: 'Kategori' } },
       {
         path: 'stok',

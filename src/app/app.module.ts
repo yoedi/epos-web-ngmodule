@@ -32,7 +32,9 @@ registerLocaleData(localeId);
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    providePrimeNG({ theme: { preset: Aura } }),
+    // The layer makes unlayered CSS win, so styles/theme.css can override Aura's
+    // tokens. Without it, PrimeNG's injected styles come last and win instead.
+    providePrimeNG({ theme: { preset: Aura, options: { cssLayer: { name: 'primeng' } } } }),
   ],
   bootstrap: [AppComponent],
 })

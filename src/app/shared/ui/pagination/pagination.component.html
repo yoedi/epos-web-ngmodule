@@ -1,0 +1,41 @@
+<nav class="pagination" aria-label="Halaman">
+  <p class="pagination__summary num">
+    Menampilkan {{ from }}-{{ to }} dari {{ totalElements }} {{ itemLabel }}
+  </p>
+  <div class="pagination__pages">
+    <button
+      type="button"
+      class="pagination__btn"
+      aria-label="Halaman sebelumnya"
+      [disabled]="page === 0"
+      (click)="pageChange.emit(page - 1)"
+    >
+      <i class="pi pi-chevron-left" aria-hidden="true"></i>
+    </button>
+    @for (p of pages; track $index) {
+      @if (p === null) {
+        <span class="pagination__gap num" aria-hidden="true">…</span>
+      } @else {
+        <button
+          type="button"
+          class="pagination__btn num"
+          [class.pagination__btn--current]="p === page"
+          [attr.aria-current]="p === page ? 'page' : null"
+          [attr.aria-label]="'Halaman ' + (p + 1)"
+          (click)="pageChange.emit(p)"
+        >
+          {{ p + 1 }}
+        </button>
+      }
+    }
+    <button
+      type="button"
+      class="pagination__btn"
+      aria-label="Halaman berikutnya"
+      [disabled]="page >= totalPages - 1"
+      (click)="pageChange.emit(page + 1)"
+    >
+      <i class="pi pi-chevron-right" aria-hidden="true"></i>
+    </button>
+  </div>
+</nav>

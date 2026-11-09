@@ -1,0 +1,19 @@
+<div class="money" [class.money--invalid]="invalid">
+  <span class="money__prefix" aria-hidden="true">Rp</span>
+  <input
+    #input
+    pInputText
+    class="money__input"
+    type="text"
+    inputmode="numeric"
+    autocomplete="off"
+    [id]="inputId"
+    [value]="text"
+    [disabled]="disabled"
+    [attr.maxlength]="maxLength"
+    [attr.aria-invalid]="invalid ? true : null"
+    [attr.aria-describedby]="describedBy"
+    (input)="handleInput()"
+    (blur)="onTouched()"
+  />
+</div>

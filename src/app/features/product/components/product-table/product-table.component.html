@@ -1,0 +1,84 @@
+<div
+  class="table"
+  role="table"
+  aria-label="Daftar produk"
+  [class.table--readonly]="!canManage"
+  [attr.aria-busy]="loading"
+>
+  <div class="row row--head" role="row">
+    @for (column of columns; track column.field) {
+      <div
+        class="cell"
+        role="columnheader"
+        [class.cell--end]="column.align === 'end'"
+        [class.cell--center]="column.align === 'center'"
+        [attr.aria-sort]="ariaSort(column.field)"
+      >
+        <button type="button" class="sort" (click)="sortChange.emit(column.field)">
+          {{ column.label }}
+          <i class="pi sort__icon" [ngClass]="sortIcon(column.field)" aria-hidden="true"></i>
+        </button>
+      </div>
+    }
+    @if (canManage) {
+      <div class="cell cell--end" role="columnheader">Aksi</div>
+    }
+  </div>
+
+  @if (loading) {
+    @for (row of skeletonRows; track row) {
+      <div class="row row--body" aria-hidden="true">
+        <p-skeleton width="80%" height="var(--fs-row-name)" />
+        <p-skeleton width="70%" height="var(--fs-row-name)" />
+        <p-skeleton width="70%" height="var(--fs-row-name)" />
+        <p-skeleton width="100%" height="var(--fs-row-name)" />
+        @if (canManage) {
+          <p-skeleton width="100%" height="var(--fs-row-name)" />
+        }
+        <p-skeleton width="80%" height="var(--pill-h)" borderRadius="var(--r-pill)" />
+        <p-skeleton width="100%" height="var(--pill-h)" borderRadius="var(--r-pill)" />
+        @if (canManage) {
+          <p-skeleton width="100%" height="var(--btn-icon)" />
+        }
+      </div>
+    }
+  } @else {
+    @for (product of products; track product.id) {
+      <div class="row row--body" role="row" [class.row--inactive]="!product.isActive">
+        <div class="cell sku" role="cell">{{ product.sku }}</div>
+        <div class="cell name" role="cell" [title]="product.name">{{ product.name }}</div>
+        <div class="cell category" role="cell" [title]="product.category.name">
+          {{ product.category.name }}
+        </div>
+        <div class="cell cell--end money money--sell" role="cell">
+          {{ product.sellPrice | rupiah }}
+        </div>
+        @if (canManage) {
+          <div class="cell cell--end money" role="cell">{{ product.costPrice | rupiah }}</div>
+        }
+        <div class="cell stock" role="cell">
+          <span
+            class="stock__qty num"
+            [class.stock__qty--low]="product.stockStatus === 'LOW_STOCK'"
+            [class.stock__qty--out]="product.stockStatus === 'OUT_OF_STOCK'"
+          >
+            {{ product.stock }}
+          </span>
+          <app-stock-badge [status]="product.stockStatus" />
+        </div>
+        <div class="cell cell--center" role="cell">
+          <span class="status">{{ product.isActive ? 'Aktif' : 'Nonaktif' }}</span>
+        </div>
+        @if (canManage) {
+          <div class="cell cell--end" role="cell">
+            <app-product-actions
+              [product]="product"
+              (edit)="edit.emit($event)"
+              (toggleStatus)="toggleStatus.emit($event)"
+            />
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

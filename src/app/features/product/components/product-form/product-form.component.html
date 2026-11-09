@@ -1,0 +1,233 @@
+<form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <div class="field">
+    <label class="field__label" for="product-name">
+      Nama barang<span class="field__required" aria-hidden="true">*</span>
+    </label>
+    <input
+      #nameInput
+      pInputText
+      id="product-name"
+      class="field__input"
+      type="text"
+      formControlName="name"
+      autocomplete="off"
+      required
+      [attr.aria-invalid]="fieldError('name') ? true : null"
+      [attr.aria-describedby]="fieldError('name') ? 'product-name-error' : null"
+    />
+    @if (fieldError('name'); as message) {
+      <p id="product-name-error" class="field__error">{{ message }}</p>
+    }
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <label class="field__label" for="product-sku">
+        SKU<span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input
+        pInputText
+        id="product-sku"
+        class="field__input num"
+        type="text"
+        formControlName="sku"
+        autocomplete="off"
+        required
+        [attr.aria-invalid]="fieldError('sku') ? true : null"
+        [attr.aria-describedby]="fieldError('sku') ? 'product-sku-error' : null"
+      />
+      @if (fieldError('sku'); as message) {
+        <p id="product-sku-error" class="field__error">{{ message }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="product-barcode">Barcode</label>
+      <div class="field__control">
+        <i class="pi pi-barcode field__icon" aria-hidden="true"></i>
+        <!-- A scanner types the code and presses Enter; that must not submit the form. -->
+        <input
+          pInputText
+          id="product-barcode"
+          class="field__input field__input--icon num"
+          type="text"
+          inputmode="numeric"
+          formControlName="barcode"
+          autocomplete="off"
+          [attr.aria-invalid]="fieldError('barcode') ? true : null"
+          [attr.aria-describedby]="fieldError('barcode') ? 'product-barcode-error' : null"
+          (keydown.enter)="$event.preventDefault()"
+        />
+      </div>
+      @if (fieldError('barcode'); as message) {
+        <p id="product-barcode-error" class="field__error">{{ message }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <label id="product-category-label" class="field__label" for="product-category">
+        Kategori<span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <p-select
+        inputId="product-category"
+        styleClass="select-block"
+        appendTo="body"
+        placeholder="Pilih kategori"
+        emptyMessage="Kategori belum tersedia"
+        ariaLabelledBy="product-category-label"
+        formControlName="categoryId"
+        optionLabel="name"
+        optionValue="id"
+        [options]="$any(categories)"
+      />
+      @if (fieldError('categoryId'); as message) {
+        <p class="field__error">{{ message }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label id="product-unit-label" class="field__label" for="product-unit">
+        Satuan<span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <p-select
+        inputId="product-unit"
+        styleClass="select-block"
+        appendTo="body"
+        placeholder="Pilih satuan"
+        ariaLabelledBy="product-unit-label"
+        formControlName="unit"
+        optionLabel="label"
+        optionValue="value"
+        [options]="$any(unitOptions)"
+      />
+      @if (fieldError('unit'); as message) {
+        <p class="field__error">{{ message }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <label class="field__label" for="product-cost">
+        Harga Modal<span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <app-money-input
+        inputId="product-cost"
+        formControlName="costPrice"
+        [invalid]="!!fieldError('costPrice')"
+        [describedBy]="fieldError('costPrice') ? 'product-cost-error' : null"
+      />
+      @if (fieldError('costPrice'); as message) {
+        <p id="product-cost-error" class="field__error">{{ message }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="product-sell">
+        Harga Jual<span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <app-money-input
+        inputId="product-sell"
+        formControlName="sellPrice"
+        [invalid]="!!fieldError('sellPrice')"
+        [describedBy]="fieldError('sellPrice') ? 'product-sell-error' : null"
+      />
+      @if (fieldError('sellPrice'); as message) {
+        <p id="product-sell-error" class="field__error">{{ message }}</p>
+      }
+    </div>
+  </div>
+
+  @if (margin$ | async; as margin) {
+    <div class="margin" [class.margin--warn]="margin.amount < 0" role="status">
+      <p class="margin__value num">
+        Margin {{ margin.amount | rupiah }}
+        @if (margin.percent !== null) {
+          / {{ margin.percent }}%
+        }
+      </p>
+      @if (margin.amount < 0) {
+        <p class="margin__warning">
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          Harga jual di bawah harga modal
+        </p>
+      }
+    </div>
+  }
+
+  <div class="form__row">
+    @if (!isEdit) {
+      <div class="field">
+        <label class="field__label" for="product-initial-stock">Stok Awal</label>
+        <input
+          pInputText
+          id="product-initial-stock"
+          class="field__input num"
+          type="number"
+          min="0"
+          step="1"
+          inputmode="numeric"
+          formControlName="initialStock"
+          [attr.aria-invalid]="fieldError('initialStock') ? true : null"
+          [attr.aria-describedby]="fieldError('initialStock') ? 'product-initial-stock-error' : null"
+        />
+        @if (fieldError('initialStock'); as message) {
+          <p id="product-initial-stock-error" class="field__error">{{ message }}</p>
+        }
+      </div>
+    }
+
+    <div class="field">
+      <label class="field__label" for="product-min-stock">
+        Stok Minimum<span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input
+        pInputText
+        id="product-min-stock"
+        class="field__input num"
+        type="number"
+        min="0"
+        step="1"
+        inputmode="numeric"
+        formControlName="minStock"
+        required
+        [attr.aria-invalid]="fieldError('minStock') ? true : null"
+        [attr.aria-describedby]="fieldError('minStock') ? 'product-min-stock-error' : null"
+      />
+      @if (fieldError('minStock'); as message) {
+        <p id="product-min-stock-error" class="field__error">{{ message }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="toggle">
+    <label class="field__label" for="product-active">Aktif</label>
+    <p-toggleswitch inputId="product-active" formControlName="isActive" />
+  </div>
+
+  @if (formError) {
+    <p class="form__error" role="alert">{{ formError }}</p>
+  }
+
+  <div class="form__actions">
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [outlined]="true"
+      label="Batal"
+      [disabled]="submitting"
+      (click)="cancelled.emit()"
+    ></button>
+    <button
+      pButton
+      type="submit"
+      class="form__submit"
+      label="Simpan"
+      [loading]="submitting"
+      [disabled]="submitting"
+    ></button>
+  </div>
+</form>
