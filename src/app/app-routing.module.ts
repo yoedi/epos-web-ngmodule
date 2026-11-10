@@ -33,7 +33,12 @@ const routes: Routes = [
         canActivate: [RoleGuard],
         data: { title: 'Dashboard', ...OWNER },
       },
-      { path: 'transaksi', component: PlaceholderComponent, data: { title: 'Riwayat Transaksi' } },
+      {
+        // Both roles: the owner sees every sale, the cashier only their own of today (PRD section 6).
+        path: 'transaksi',
+        loadChildren: () =>
+          import('./features/sale-history/sale-history.module').then((m) => m.SaleHistoryModule),
+      },
       {
         // Both roles: the owner manages, the cashier only views (PRD section 6).
         path: 'produk',

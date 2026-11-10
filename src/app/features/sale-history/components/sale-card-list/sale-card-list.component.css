@@ -1,0 +1,62 @@
+.cards {
+  display: grid;
+  gap: var(--gap-card);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: grid;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--btn-h);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+  color: var(--c-ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.card:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+.card__top,
+.card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.card__invoice {
+  font-size: var(--fs-money);
+  font-weight: var(--fw-semibold);
+}
+
+.card__chevron {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-caption);
+}
+
+.card__meta,
+.card__items {
+  color: var(--c-ink-secondary);
+  font-size: var(--fs-caption);
+}
+
+.card__bottom {
+  padding-top: var(--sp-2);
+  border-top: var(--border-w) solid var(--c-border-inner);
+}
+
+.card__total {
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-bold);
+}

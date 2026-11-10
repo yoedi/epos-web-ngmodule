@@ -7,7 +7,7 @@ import { StoreSettingsService } from './store-settings.service';
 const MOCK_LATENCY_MS = 400;
 
 /** Sample store from PRD section 12 and docs/api-spec.md section 7. */
-const MOCK_STORE: StoreSettingsDto = {
+export const MOCK_STORE: StoreSettingsDto = {
   store_name: 'Toko Berkah Jaya',
   address: 'Jl. Kaliurang Km 5, Yogyakarta',
   phone: '0274-123456',

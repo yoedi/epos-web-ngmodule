@@ -1,8 +1,9 @@
 /*
  * Print styles for the 58 mm thermal receipt (PRD 9.3).
- * Only the receipt is printed: ReceiptPrintComponent moves its host element
- * to <body>, so every other direct child of <body> can simply be hidden.
- * The receipt layout itself lives in receipt-print.component.css.
+ * Only the receipt is printed: ReceiptPrintComponent (Kasir) and
+ * SaleReceiptPrintComponent (Riwayat Transaksi, "Cetak Ulang") move their host
+ * element to <body>, so every other direct child of <body> can simply be hidden.
+ * The receipt layout itself lives in each receipt component's CSS.
  */
 
 @media print {
@@ -12,7 +13,7 @@
     margin: 0;
   }
 
-  body > :not(app-receipt-print) {
+  body > :not(app-receipt-print, app-sale-receipt-print) {
     display: none !important;
   }
 

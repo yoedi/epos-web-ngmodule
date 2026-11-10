@@ -15,6 +15,7 @@ import Aura from '@primeng/themes/aura';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { PRIMENG_ID } from './core/i18n/primeng-id';
 import { AuthInterceptor } from './core/http/auth.interceptor';
 import { ErrorInterceptor } from './core/http/error.interceptor';
 import { PlaceholderComponent } from './placeholder/placeholder.component';
@@ -34,7 +35,10 @@ registerLocaleData(localeId);
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     // The layer makes unlayered CSS win, so styles/theme.css can override Aura's
     // tokens. Without it, PrimeNG's injected styles come last and win instead.
-    providePrimeNG({ theme: { preset: Aura, options: { cssLayer: { name: 'primeng' } } } }),
+    providePrimeNG({
+      theme: { preset: Aura, options: { cssLayer: { name: 'primeng' } } },
+      translation: PRIMENG_ID,
+    }),
   ],
   bootstrap: [AppComponent],
 })

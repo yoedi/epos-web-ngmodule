@@ -157,6 +157,15 @@
   /* ── Kategori (belum ada mockup; mengikuti Daftar Produk) ── */
   --col-count: 136px; /* kolom Jumlah Produk */
 
+  /* ── Riwayat Transaksi (dari mockup 5a) ──────────────────── */
+  --fs-stat: 26px; /* angka kartu ringkasan (Total Omzet, dst.) */
+  --col-invoice: 168px; /* "INV-20260918-0042" mono */
+  --col-datetime: 156px; /* "18 Sep 2026, 14:33" mono */
+  --col-item-count: 104px; /* "17 barang" + judul JUMLAH ITEM */
+  --col-view: 88px; /* tombol Lihat */
+  --toolbar-date-w: 300px; /* rentang tanggal */
+  --receipt-preview-w: 320px; /* struk di drawer detail */
+
   /* ── Layar Kasir (dari mockup 1a, 2a, 8a) ────────────────── */
   --search-h: 62px; /* input pencarian besar */
   --fs-search: 18px;

@@ -1,0 +1,295 @@
+@if (vm$ | async; as vm) {
+  <div class="page">
+    <header class="page__header">
+      <h1 class="page__title">Riwayat Transaksi</h1>
+      <span class="page__range datetime">
+        @if (vm.isToday) {
+          Hari ini ·
+        }
+        {{ vm.start | date: 'd MMM y' }}
+        @if (!vm.sameDay) {
+          – {{ vm.end | date: 'd MMM y' }}
+        }
+      </span>
+    </header>
+
+    <section class="toolbar" aria-label="Filter transaksi" [formGroup]="filters">
+      @if (vm.isOwner) {
+        <div class="toolbar__date">
+          <p-datepicker
+            styleClass="date-range"
+            inputStyleClass="datetime"
+            ariaLabel="Rentang tanggal"
+            selectionMode="range"
+            dateFormat="d M yy"
+            rangeSeparator=" – "
+            iconDisplay="input"
+            formControlName="range"
+            [readonlyInput]="true"
+            [showIcon]="true"
+            [maxDate]="maxDate"
+            (onClose)="completeRange()"
+          />
+        </div>
+        <div class="toolbar__select">
+          <p-select
+            styleClass="select-block select-filter"
+            ariaLabel="Filter kasir"
+            placeholder="Semua Kasir"
+            formControlName="cashierId"
+            optionLabel="name"
+            optionValue="id"
+            [options]="vm.cashierOptions"
+          />
+        </div>
+      }
+
+      <div class="toolbar__search">
+        <label class="sr-only" for="invoice-search">Cari nomor invoice</label>
+        <i class="pi pi-search toolbar__search-icon" aria-hidden="true"></i>
+        <input
+          pInputText
+          id="invoice-search"
+          class="toolbar__search-input invoice"
+          type="search"
+          autocomplete="off"
+          placeholder="Cari nomor invoice"
+          formControlName="invoiceNo"
+        />
+      </div>
+
+      @if (vm.isOwner) {
+        <button
+          type="button"
+          class="toolbar__filter"
+          aria-label="Filter"
+          [class.toolbar__filter--active]="vm.sheetFilterCount > 0"
+          (click)="filterSheetOpen = true"
+        >
+          <i class="pi pi-filter" aria-hidden="true"></i>
+          @if (vm.sheetFilterCount > 0) {
+            <span class="toolbar__filter-count num">{{ vm.sheetFilterCount }}</span>
+          }
+        </button>
+      }
+
+      <button
+        pButton
+        type="button"
+        class="toolbar__reset"
+        severity="secondary"
+        icon="pi pi-filter"
+        label="Atur Ulang Filter"
+        [outlined]="true"
+        (click)="resetFilters()"
+      ></button>
+    </section>
+
+    @if (vm.state.status !== 'error') {
+      <section class="stats" aria-label="Ringkasan transaksi" aria-live="polite">
+        <div class="stat stat--main">
+          <p class="stat__label">Total Omzet</p>
+          @if (vm.state.status === 'ready') {
+            <p class="stat__value money">{{ vm.state.result.totals.totalRevenue | rupiah }}</p>
+          } @else {
+            <p-skeleton width="60%" height="var(--fs-stat)" />
+          }
+        </div>
+        <div class="stat">
+          <p class="stat__label">Jumlah Transaksi</p>
+          @if (vm.state.status === 'ready') {
+            <p class="stat__value num">{{ vm.state.result.totals.transactionCount }}</p>
+          } @else {
+            <p-skeleton width="30%" height="var(--fs-stat)" />
+          }
+        </div>
+        <div class="stat">
+          <p class="stat__label">Rata-rata Transaksi</p>
+          @if (vm.state.status === 'ready') {
+            <p class="stat__value money">
+              {{ vm.state.result.totals.averageTransaction | rupiah }}
+            </p>
+          } @else {
+            <p-skeleton width="50%" height="var(--fs-stat)" />
+          }
+        </div>
+      </section>
+    }
+
+    <section class="results" aria-live="polite">
+      @if (vm.state.status === 'error') {
+        <app-empty-state
+          icon="pi-exclamation-triangle"
+          title="Gagal memuat transaksi"
+          [danger]="true"
+          [description]="vm.state.message"
+        >
+          <button pButton type="button" label="Coba lagi" icon="pi pi-refresh" (click)="retry()"></button>
+        </app-empty-state>
+      } @else if (vm.state.status === 'ready' && vm.state.result.page.totalElements === 0) {
+        @if (vm.hasFilter) {
+          <app-empty-state
+            icon="pi-search"
+            title="Transaksi tidak ditemukan"
+            description="Coba nomor invoice atau filter lain."
+          >
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              label="Atur Ulang Filter"
+              [outlined]="true"
+              (click)="resetFilters()"
+            ></button>
+          </app-empty-state>
+        } @else {
+          <app-empty-state
+            icon="pi-receipt"
+            title="Belum ada transaksi hari ini"
+            description="Transaksi yang tersimpan dari Layar Kasir akan muncul di sini."
+          />
+        }
+      } @else {
+        <app-sale-table
+          class="results__table"
+          [sales]="vm.state.status === 'ready' ? vm.state.result.page.content : []"
+          [loading]="vm.state.status === 'loading'"
+          [direction]="vm.query.direction"
+          (toggleSort)="toggleSort()"
+          (view)="openDetail($event)"
+        />
+        <app-sale-card-list
+          class="results__cards"
+          [sales]="vm.state.status === 'ready' ? vm.state.result.page.content : []"
+          [loading]="vm.state.status === 'loading'"
+          (view)="openDetail($event)"
+        />
+        @if (vm.state.status === 'ready') {
+          <app-pagination
+            class="results__pagination"
+            itemLabel="transaksi"
+            [page]="vm.state.result.page.page"
+            [size]="vm.state.result.page.size"
+            [totalElements]="vm.state.result.page.totalElements"
+            [totalPages]="vm.state.result.page.totalPages"
+            (pageChange)="changePage($event)"
+          />
+        }
+      }
+    </section>
+  </div>
+
+  <!-- Phone: the date range and cashier filters fold into a bottom sheet (PRD section 7). -->
+  @if (vm.isOwner) {
+    <p-drawer position="bottom" header="Filter" [(visible)]="filterSheetOpen">
+      @if (filterSheetOpen) {
+        <div class="sheet" [formGroup]="filters">
+          <div class="sheet__field">
+            <label class="sheet__label" for="sheet-range">Rentang tanggal</label>
+            <p-datepicker
+              styleClass="date-range"
+              inputStyleClass="datetime"
+              inputId="sheet-range"
+              appendTo="body"
+              selectionMode="range"
+              dateFormat="d M yy"
+              rangeSeparator=" – "
+              iconDisplay="input"
+              formControlName="range"
+              [readonlyInput]="true"
+              [showIcon]="true"
+              [maxDate]="maxDate"
+              (onClose)="completeRange()"
+            />
+          </div>
+          <div class="sheet__field">
+            <label id="sheet-cashier-label" class="sheet__label">Kasir</label>
+            <p-select
+              styleClass="select-block select-filter"
+              appendTo="body"
+              ariaLabelledBy="sheet-cashier-label"
+              placeholder="Semua Kasir"
+              formControlName="cashierId"
+              optionLabel="name"
+              optionValue="id"
+              [options]="vm.cashierOptions"
+            />
+          </div>
+          <div class="sheet__actions">
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              label="Atur Ulang"
+              [outlined]="true"
+              (click)="resetFilters()"
+            ></button>
+            <button pButton type="button" label="Terapkan" (click)="filterSheetOpen = false"></button>
+          </div>
+        </div>
+      }
+    </p-drawer>
+  }
+
+  <p-drawer
+    position="right"
+    header="Detail Transaksi"
+    [style]="{ width: 'var(--drawer-w)' }"
+    [visible]="detailOpen"
+    (visibleChange)="!$event && closeDetail()"
+  >
+    @if (detail$ | async; as detail) {
+      <div class="detail" aria-live="polite">
+        @switch (detail.status) {
+          @case ('loading') {
+            <div class="detail__skeleton" aria-hidden="true">
+              <p-skeleton width="60%" height="var(--fs-title)" />
+              <p-skeleton width="80%" height="var(--fs-body)" />
+              <p-skeleton width="100%" height="var(--table-row-h)" />
+              <p-skeleton width="100%" height="var(--table-row-h)" />
+              <p-skeleton width="70%" height="var(--fs-title)" />
+            </div>
+          }
+          @case ('error') {
+            <app-empty-state
+              icon="pi-exclamation-triangle"
+              title="Gagal memuat transaksi"
+              [danger]="true"
+              [description]="detail.message"
+            >
+              <button
+                pButton
+                type="button"
+                label="Coba lagi"
+                icon="pi pi-refresh"
+                (click)="retryDetail()"
+              ></button>
+            </app-empty-state>
+          }
+          @case ('ready') {
+            <app-sale-receipt [sale]="detail.sale" />
+            <div class="detail__actions">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                label="Tutup"
+                [outlined]="true"
+                (click)="closeDetail()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                class="detail__print"
+                icon="pi pi-print"
+                label="Cetak Ulang"
+                (click)="reprint()"
+              ></button>
+            </div>
+            <app-sale-receipt-print [sale]="detail.sale" />
+          }
+        }
+      </div>
+    }
+  </p-drawer>
+}

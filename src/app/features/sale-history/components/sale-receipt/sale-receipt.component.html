@@ -1,0 +1,36 @@
+<article class="receipt" [attr.aria-label]="'Struk ' + sale.invoiceNo">
+  <header class="center">
+    <p class="store">{{ sale.store.storeName }}</p>
+    <p>{{ sale.store.address }}</p>
+    <p>Telp. <span class="num">{{ sale.store.phone }}</span></p>
+  </header>
+  <hr />
+
+  <div class="meta">
+    <p class="line"><span>No</span><span class="invoice">{{ sale.invoiceNo }}</span></p>
+    <p class="line">
+      <span>Tanggal</span>
+      <span class="datetime">{{ sale.createdAt | date: 'd MMM y, HH:mm' : '+0700' }}</span>
+    </p>
+    <p class="line"><span>Kasir</span><span>{{ sale.cashierName }}</span></p>
+  </div>
+  <hr />
+
+  @for (item of sale.items; track item.productId) {
+    <div class="item">
+      <p>{{ item.productName }}</p>
+      <p class="line">
+        <span class="money">{{ item.qty }} × {{ item.price | rupiah }}</span>
+        <span class="money">{{ item.subtotal | rupiah }}</span>
+      </p>
+    </div>
+  }
+  <hr />
+
+  <p class="line total"><span>Total</span><span class="money">{{ sale.total | rupiah }}</span></p>
+  <p class="line"><span>Tunai</span><span class="money">{{ sale.paid | rupiah }}</span></p>
+  <p class="line"><span>Kembalian</span><span class="money">{{ sale.change | rupiah }}</span></p>
+  <hr />
+
+  <p class="center">{{ footer }}</p>
+</article>

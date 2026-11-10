@@ -1,0 +1,133 @@
+:host {
+  display: block;
+  overflow-x: auto;
+}
+
+.table {
+  --columns: var(--col-invoice) var(--col-datetime) minmax(var(--col-category), 1fr)
+    var(--col-item-count) var(--col-subtotal) var(--col-view);
+  min-width: calc(
+    var(--col-invoice) + var(--col-datetime) + var(--col-category) + var(--col-item-count) +
+      var(--col-subtotal) + var(--col-view) + 5 * var(--sp-3) + 2 * var(--sp-4)
+  );
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--columns);
+  align-items: center;
+  gap: var(--sp-3);
+  padding-inline: var(--sp-4);
+}
+
+.row--head {
+  min-height: var(--table-head-h);
+  background: var(--c-fill-table-head);
+  border-bottom: var(--border-w) solid var(--c-border);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-table-head);
+  text-transform: uppercase;
+}
+
+.row--body {
+  min-height: var(--table-row-h);
+  border-bottom: var(--border-w) solid var(--c-border-row);
+}
+
+.row--body:last-child {
+  border-bottom: 0;
+}
+
+.row--body:hover {
+  background: var(--c-fill-row-hover);
+}
+
+.cell {
+  min-width: 0;
+}
+
+.cell--end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-ink);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.sort:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+.sort__icon {
+  font-size: var(--fs-overline);
+}
+
+.invoice {
+  font-size: var(--fs-money);
+  font-weight: var(--fw-semibold);
+}
+
+.datetime,
+.items {
+  color: var(--c-ink-secondary);
+}
+
+.datetime {
+  font-size: var(--fs-body);
+}
+
+.cashier {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-row-name);
+}
+
+.items {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-body);
+}
+
+.money {
+  font-size: var(--fs-money);
+  font-weight: var(--fw-bold);
+}
+
+.view {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: var(--btn-icon);
+  padding-inline: var(--sp-3);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.view:hover {
+  background: var(--c-fill-row-hover);
+}
+
+.view:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}

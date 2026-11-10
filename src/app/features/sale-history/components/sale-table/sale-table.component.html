@@ -1,0 +1,64 @@
+<div class="table" role="table" aria-label="Daftar transaksi" [attr.aria-busy]="loading">
+  <div class="row row--head" role="row">
+    <div class="cell" role="columnheader">No. Invoice</div>
+    <div
+      class="cell"
+      role="columnheader"
+      [attr.aria-sort]="direction === 'asc' ? 'ascending' : 'descending'"
+    >
+      <button type="button" class="sort" (click)="toggleSort.emit()">
+        Tanggal &amp; Jam
+        <i
+          class="pi sort__icon"
+          [class.pi-chevron-down]="direction === 'desc'"
+          [class.pi-chevron-up]="direction === 'asc'"
+          aria-hidden="true"
+        ></i>
+      </button>
+    </div>
+    <div class="cell" role="columnheader">Kasir</div>
+    <div class="cell cell--end" role="columnheader">Jumlah Item</div>
+    <div class="cell cell--end" role="columnheader">Total</div>
+    <div class="cell cell--end" role="columnheader">Aksi</div>
+  </div>
+
+  @if (loading) {
+    @for (row of skeletonRows; track row) {
+      <div class="row row--body" aria-hidden="true">
+        <p-skeleton width="90%" height="var(--fs-row-name)" />
+        <p-skeleton width="85%" height="var(--fs-row-name)" />
+        <p-skeleton width="40%" height="var(--fs-row-name)" />
+        <p-skeleton width="70%" height="var(--fs-row-name)" />
+        <p-skeleton width="90%" height="var(--fs-row-name)" />
+        <p-skeleton width="100%" height="var(--btn-icon)" />
+      </div>
+    }
+  } @else {
+    @for (sale of sales; track sale.id) {
+      <div class="row row--body" role="row">
+        <div class="cell invoice" role="cell">{{ sale.invoiceNo }}</div>
+        <div class="cell datetime" role="cell">
+          {{ sale.createdAt | date: 'd MMM y, HH:mm' : '+0700' }}
+        </div>
+        <div class="cell cashier" role="cell" [title]="sale.cashierName">
+          {{ sale.cashierName }}
+        </div>
+        <div class="cell cell--end items" role="cell">
+          <span class="num">{{ sale.itemCount }}</span>&nbsp;barang
+        </div>
+        <div class="cell cell--end money" role="cell">{{ sale.total | rupiah }}</div>
+        <div class="cell cell--end" role="cell">
+          <button
+            type="button"
+            class="view"
+            [attr.aria-label]="'Lihat ' + sale.invoiceNo"
+            (click)="view.emit(sale)"
+          >
+            <i class="pi pi-eye" aria-hidden="true"></i>
+            Lihat
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>

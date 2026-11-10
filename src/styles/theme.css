@@ -263,3 +263,16 @@
   width: 100%;
   min-height: var(--btn-h);
 }
+
+/* Rentang tanggal (Riwayat Transaksi): selebar wadah, setinggi tombol, nilai mono (mockup 5a) */
+.p-datepicker.date-range {
+  display: flex;
+  width: 100%;
+}
+
+.p-datepicker.date-range .p-inputtext {
+  width: 100%;
+  min-height: var(--btn-h);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}

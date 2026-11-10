@@ -89,6 +89,7 @@ Error validasi menyertakan daftar field:
 | `POST/PATCH /products`, `/categories`           | ✓          | —                             |
 | `POST /sales`                                   | ✓          | ✓                             |
 | `GET /sales`                                    | semua data | hanya milik sendiri, hari ini |
+| `GET /users`                                    | ✓          | —                             |
 | `POST /stock/in`, `/stock/adjustment`           | ✓          | —                             |
 | `GET /reports/**`                               | ✓          | —                             |
 | `GET/PUT /store-settings`                       | ✓          | GET saja                      |
@@ -321,7 +322,7 @@ Layar 9.9.
 
 CASHIER hanya menerima transaksinya sendiri hari ini, apa pun filter yang dikirim.
 
-**Response 200:** `PageResponse` berisi ringkasan transaksi, ditambah agregat sesuai filter:
+**Response 200:** `PageResponse` berisi ringkasan transaksi, ditambah agregat sesuai filter (seluruh hasil filter, bukan hanya halaman ini):
 
 ```json
 {
@@ -335,14 +336,16 @@ CASHIER hanya menerima transaksinya sendiri hari ini, apa pun filter yang dikiri
       "created_at": "2026-09-16T14:32:10+07:00"
     }
   ],
-  "summary": { "total_revenue": 1875000, "transaction_count": 23 },
+  "summary": { "total_revenue": 4305000, "transaction_count": 42, "average_transaction": 102500 },
   "page": 0,
   "size": 20,
-  "total_elements": 23,
-  "total_pages": 2,
+  "total_elements": 42,
+  "total_pages": 3,
   "last": false
 }
 ```
+
+`item_count` adalah jumlah qty seluruh item (bukan jumlah baris). `average_transaction` dihitung server dengan cara yang sama seperti di `/reports/daily` (bilangan bulat rupiah, `0` bila tidak ada transaksi); frontend tidak menghitung ulang.
 
 ### GET /sales/{id}
 
@@ -479,7 +482,28 @@ Dipakai header aplikasi dan struk. Dapat diakses semua role.
 
 ---
 
-## 8. Ringkasan Endpoint
+## 8. Users
+
+### GET /users — OWNER
+
+Daftar pengguna untuk filter kasir di layar 9.9. Tidak dipaginasi (jumlah pengguna sedikit). Diurutkan `name` menaik.
+
+**Query param:** `role` (`OWNER` | `CASHIER`, opsional).
+
+**Response 200**
+
+```json
+[
+  { "id": 3, "name": "Dewi Anggraini", "username": "dewi", "role": "CASHIER", "is_active": true },
+  { "id": 2, "name": "Rina Lestari", "username": "rina", "role": "CASHIER", "is_active": true }
+]
+```
+
+Pengguna nonaktif tetap dikembalikan agar transaksi lamanya tetap bisa difilter.
+
+---
+
+## 9. Ringkasan Endpoint
 
 | Method | Path                       | Role    | Layar    |
 | ------ | -------------------------- | ------- | -------- |
@@ -504,12 +528,13 @@ Dipakai header aplikasi dan struk. Dapat diakses semua role.
 | GET    | `/reports/daily`           | OWNER   | 9.4      |
 | GET    | `/store-settings`          | semua   | 9.3      |
 | PUT    | `/store-settings`          | OWNER   | —        |
+| GET    | `/users`                   | OWNER   | 9.9      |
 
 \* CASHIER dibatasi pada transaksinya sendiri hari ini.
 
 ---
 
-## 9. Urutan Implementasi
+## 10. Urutan Implementasi
 
 | Tahap | Endpoint                                            | Catatan                                                      |
 | ----- | --------------------------------------------------- | ------------------------------------------------------------ |
@@ -517,11 +542,11 @@ Dipakai header aplikasi dan struk. Dapat diakses semua role.
 | 2     | `/sales`                                            | Inti aplikasi, kerjakan bersama integration test             |
 | 3     | `/auth/**`                                          | Security + JWT, lalu pasang otorisasi di endpoint sebelumnya |
 | 4     | `/stock/**`                                         | Stok masuk dan penyesuaian                                   |
-| 5     | `/sales` (GET), `/reports/daily`, `/store-settings` | Riwayat dan laporan                                          |
+| 5     | `/sales` (GET), `/users`, `/reports/daily`, `/store-settings` | Riwayat dan laporan                                          |
 
 ---
 
-## 10. Rencana Perubahan di Roadmap
+## 11. Rencana Perubahan di Roadmap
 
 Disiapkan sejak v1 agar tidak merombak kontrak:
 

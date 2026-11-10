@@ -1,0 +1,97 @@
+:host {
+  display: block;
+}
+
+/* ── Screen: paper-like preview in the detail drawer ── */
+.receipt {
+  width: 100%;
+  max-width: var(--receipt-preview-w);
+  margin-inline: auto;
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-icon-tile);
+  box-shadow: var(--sh-card);
+  color: var(--c-ink);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+p {
+  margin: 0;
+}
+
+hr {
+  margin: var(--sp-2) 0;
+  border: 0;
+  border-top: var(--border-w) dashed var(--c-border);
+}
+
+.center {
+  text-align: center;
+}
+
+.store {
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.meta,
+.meta .line > :first-child {
+  color: var(--c-ink-secondary);
+}
+
+.meta .line > :last-child {
+  color: var(--c-ink);
+}
+
+.item {
+  break-inside: avoid;
+}
+
+.item + .item {
+  margin-top: var(--sp-1);
+}
+
+.total {
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+}
+
+/* ── Print: 58 mm thermal (PRD 9.3), same as the cashier receipt ── */
+:host(.receipt--print) .receipt {
+  width: var(--receipt-w);
+  max-width: none;
+  margin: 0;
+  padding: var(--receipt-pad);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--c-receipt-ink);
+  font-size: var(--fs-receipt);
+}
+
+:host(.receipt--print) hr {
+  margin: var(--sp-1) 0;
+  border-top-color: var(--c-receipt-ink);
+}
+
+:host(.receipt--print) .store {
+  font-size: var(--fs-receipt-title);
+}
+
+:host(.receipt--print) .total {
+  font-size: inherit;
+}
+
+:host(.receipt--print) .meta,
+:host(.receipt--print) .meta .line > * {
+  color: inherit;
+}
