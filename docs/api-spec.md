@@ -441,10 +441,13 @@ Layar 9.4. Query param `date` (default hari ini, zona Asia/Jakarta).
     { "hour": 8, "total": 125000, "transaction_count": 2 },
     { "hour": 9, "total": 340000, "transaction_count": 5 }
   ],
-  "top_products": [{ "product_id": 5, "product_name": "Mi Instan Goreng", "qty_sold": 45, "total": 157500 }],
+  "top_products": [
+    { "product_id": 5, "sku": "MIE-001", "product_name": "Mi Instan Goreng", "qty_sold": 45, "total": 157500 }
+  ],
   "low_stock_products": [
     {
       "product_id": 2,
+      "sku": "MYK-002",
       "product_name": "Minyak Goreng 2 L",
       "stock": 3,
       "min_stock": 12,
@@ -454,7 +457,7 @@ Layar 9.4. Query param `date` (default hari ini, zona Asia/Jakarta).
 }
 ```
 
-`hourly_sales` hanya berisi jam yang memiliki transaksi; frontend melengkapi jam kosong dengan nilai 0. `top_products` dibatasi 5 teratas.
+`hourly_sales` hanya berisi jam yang memiliki transaksi; frontend melengkapi jam kosong dengan nilai 0. `top_products` dibatasi 5 teratas, diurutkan dari `total` terbesar. `sku` di `top_products` dan `low_stock_products` adalah SKU produk saat ini (ditampilkan di Dashboard, mockup 3a).
 
 ---
 

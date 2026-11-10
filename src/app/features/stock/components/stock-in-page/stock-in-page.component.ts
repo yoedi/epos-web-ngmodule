@@ -1,13 +1,16 @@
-import { Component, DestroyRef, ElementRef, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, ElementRef, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import {
   BehaviorSubject,
   Observable,
+  asapScheduler,
   catchError,
   finalize,
   map,
+  observeOn,
   of,
   startWith,
   switchMap,
@@ -38,6 +41,7 @@ interface DraftSummary {
  * Stok Masuk (PRD 9.7, mockup 6a). Items are collected in a draft list with
  * "stok sebelum → sesudah", then saved at once with POST /stock/in.
  * The draft stays on the page when saving fails, so the owner can try again.
+ * `?produk=<id>` (from "Tambah Stok" on the Dashboard) opens with that product picked.
  */
 @Component({
   selector: 'app-stock-in-page',
@@ -45,10 +49,12 @@ interface DraftSummary {
   styleUrl: './stock-in-page.component.css',
   standalone: false,
 })
-export class StockInPageComponent {
+export class StockInPageComponent implements AfterViewInit {
   private readonly stockService = inject(StockService);
   private readonly messages = inject(MessageService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   @ViewChild(StockProductPickerComponent)
   private picker!: StockProductPickerComponent;
@@ -85,6 +91,31 @@ export class StockInPageComponent {
   saveErrors: string[] = [];
   highlightId: number | null = null;
   submitting = false;
+
+  ngAfterViewInit(): void {
+    const id = Number(this.route.snapshot.queryParamMap.get('produk'));
+    if (!Number.isInteger(id) || id <= 0) {
+      return;
+    }
+    // Drop the param so a reload after saving does not pick the product again.
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { produk: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+    this.stockService
+      .getProduct(id)
+      // Never pick inside this view check, even if the response arrives synchronously.
+      .pipe(observeOn(asapScheduler), takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        // Picking emits selectionChange, which moves focus to Jumlah.
+        next: (product) => this.picker.pick(product),
+        error: (err: unknown) => {
+          this.pickerError = isAppError(err) ? err.message : UNKNOWN_ERROR_MESSAGE;
+        },
+      });
+  }
 
   onSelection(product: StockProduct | null): void {
     this.selected = product;

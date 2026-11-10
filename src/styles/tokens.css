@@ -170,6 +170,21 @@
   --col-stock-change: 184px; /* "STOK SEBELUM → SESUDAH" */
   --stock-history-w: 320px; /* panel Riwayat Stok Masuk Terbaru */
 
+  /* ── Dashboard (dari mockup 3a & 9a) ─────────────────────── */
+  --fs-stat-lg: 32px; /* angka kartu ringkasan dashboard */
+  --dashboard-main-fr: 1.6fr; /* kolom grafik & terlaris vs. stok menipis */
+  --chart-h: 160px; /* area batang grafik per jam */
+  --chart-axis-w: 64px; /* label sumbu Y "1.100.000" */
+  --chart-bar-gap: var(--sp-2);
+  --chart-stub-h: 3px; /* jam tanpa penjualan */
+  --r-bar: 4px; /* ujung atas batang */
+  --c-chart-bar: oklch(0.72 0.12 254);
+  --c-chart-bar-active: var(--c-primary); /* jam berjalan / disorot */
+  --c-chart-stub: var(--c-border);
+  --col-stock-num: 48px; /* kolom STOK & MIN */
+  --col-add-stock: 124px; /* tombol "+ Tambah Stok" */
+  --col-qty-sold: 104px; /* QTY TERJUAL */
+
   /* ── Layar Kasir (dari mockup 1a, 2a, 8a) ────────────────── */
   --search-h: 62px; /* input pencarian besar */
   --fs-search: 18px;
@@ -229,6 +244,7 @@
     --c-primary-tint-ink: oklch(0.8 0.09 254);
     --c-primary-tint-ink-strong: oklch(0.92 0.05 254);
     --c-avatar-bg: oklch(0.32 0.05 254);
+    --c-chart-bar: oklch(0.5 0.12 254);
 
     --c-success: oklch(0.7 0.13 152);
     --c-success-bg: oklch(0.3 0.05 152);

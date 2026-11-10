@@ -1,0 +1,156 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--col-stock-num) var(
+      --col-stock-num
+    ) var(--col-add-stock);
+  align-items: center;
+  gap: var(--sp-3);
+  padding-inline: var(--sp-4);
+}
+
+.row--head {
+  min-height: var(--table-head-h);
+  background: var(--c-fill-table-head);
+  border-block: var(--border-w) solid var(--c-border);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-table-head);
+  text-transform: uppercase;
+}
+
+.row--body {
+  min-height: var(--table-row-h);
+  border-bottom: var(--border-w) solid var(--c-border-row);
+}
+
+.row--body:hover {
+  background: var(--c-fill-row-hover);
+}
+
+.cell {
+  min-width: 0;
+}
+
+.cell--end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cell--product {
+  display: grid;
+  gap: var(--sp-1);
+}
+
+.name {
+  overflow: hidden;
+  font-size: var(--fs-row-name);
+  font-weight: var(--fw-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-caption);
+}
+
+/* Laptop: the minimum has its own column; the phone folds it into this line. */
+.meta__min,
+.stock__badge {
+  display: none;
+}
+
+.stock {
+  font-size: var(--fs-row-name);
+  font-weight: var(--fw-bold);
+}
+
+.stock--out {
+  color: var(--c-danger-ink);
+}
+
+.stock--low {
+  color: var(--c-warning-ink);
+}
+
+.cell--min {
+  color: var(--c-ink-secondary);
+  font-size: var(--fs-row-name);
+}
+
+.add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-height: var(--btn-icon);
+  padding-inline: var(--sp-3);
+  border: var(--border-w) solid var(--c-primary-tint-border);
+  border-radius: var(--r-control);
+  background: var(--c-primary-tint-bg);
+  color: var(--c-primary);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.add:hover {
+  border-color: var(--c-primary);
+}
+
+.add:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+/* Phone (mockup 9a): list rows, stock + badge on the right, a square add button. */
+@media (max-width: 767.98px) {
+  .row--head {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .row--body:last-child {
+    border-bottom: 0;
+  }
+
+  .cell--min,
+  .meta__badge,
+  .add__label {
+    display: none;
+  }
+
+  .meta__min {
+    display: inline;
+  }
+
+  .cell--stock {
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  .stock__badge {
+    display: inline-flex;
+  }
+
+  .meta {
+    gap: 0;
+  }
+
+  .add {
+    width: var(--btn-h);
+    min-height: var(--btn-h);
+    padding: 0;
+  }
+}

@@ -1,0 +1,54 @@
+<div class="chart" role="img" aria-label="Grafik penjualan per jam">
+  <div class="chart__axis" aria-hidden="true">
+    @for (tick of scale.ticks; track $index) {
+      <span class="chart__tick num">{{ tick | number: "1.0-0" }}</span>
+    }
+  </div>
+
+  <div class="chart__plot" aria-hidden="true" (mouseleave)="hoveredHour = null">
+    <span class="chart__grid chart__grid--top"></span>
+    <span class="chart__grid chart__grid--mid"></span>
+    <span class="chart__grid chart__grid--base"></span>
+
+    @for (bar of bars; track bar.hour) {
+      <div
+        class="chart__column"
+        [class.chart__column--active]="bar.hour === activeHour"
+        (mouseenter)="hoveredHour = bar.total > 0 ? bar.hour : null"
+      >
+        @if (bar.total > 0) {
+          <span class="chart__bar" [style.height.%]="bar.percent">
+            @if (bar.hour === activeHour) {
+              <span class="chart__tooltip money">{{ bar.total | rupiah }}</span>
+            }
+          </span>
+        } @else {
+          <span class="chart__stub"></span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="chart__hours" aria-hidden="true">
+    @for (bar of bars; track bar.hour) {
+      <span
+        class="chart__hour num"
+        [class.chart__hour--active]="bar.hour === activeHour"
+      >
+        {{ bar.hour | number: "2.0-0" }}
+      </span>
+    }
+  </div>
+</div>
+
+<!-- Table view of the chart for screen readers. -->
+<ul class="sr-only" aria-label="Penjualan per jam">
+  @for (bar of bars; track bar.hour) {
+    @if (bar.total > 0) {
+      <li>
+        Jam {{ bar.hour | number: "2.0-0" }}.00: {{ bar.total | rupiah }},
+        {{ bar.transactionCount }} transaksi
+      </li>
+    }
+  }
+</ul>

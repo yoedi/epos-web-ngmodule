@@ -1,0 +1,139 @@
+:host {
+  display: block;
+}
+
+.chart {
+  display: grid;
+  grid-template-columns: var(--chart-axis-w) minmax(0, 1fr);
+  grid-template-rows: var(--chart-h) auto;
+  column-gap: var(--sp-3);
+  row-gap: var(--sp-2);
+}
+
+/* ── Y axis: labels sit on the gridlines (top, middle, baseline) ── */
+.chart__axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  /* Labels are centred on the lines, so they overhang half a line each way. */
+  margin-block: calc(var(--fs-caption) * -0.5);
+}
+
+.chart__tick {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-tight);
+}
+
+/* ── Plot ── */
+.chart__plot {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--chart-bar-gap);
+}
+
+.chart__grid {
+  position: absolute;
+  inset-inline: 0;
+  border-top: var(--border-w) solid var(--c-border-inner);
+}
+
+.chart__grid--top {
+  top: 0;
+}
+
+.chart__grid--mid {
+  top: 50%;
+}
+
+.chart__grid--base {
+  bottom: 0;
+  border-color: var(--c-border);
+}
+
+/* The whole column is the hover target, not just the bar. */
+.chart__column {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+}
+
+.chart__bar {
+  position: relative;
+  width: 100%;
+  min-height: var(--chart-stub-h);
+  border-radius: var(--r-bar) var(--r-bar) 0 0;
+  background: var(--c-chart-bar);
+}
+
+.chart__column--active .chart__bar {
+  background: var(--c-chart-bar-active);
+}
+
+/* Empty hour: a thin stub on the baseline instead of nothing. */
+.chart__stub {
+  width: 100%;
+  height: var(--chart-stub-h);
+  border-radius: var(--r-bar);
+  background: var(--c-chart-stub);
+}
+
+.chart__tooltip {
+  position: absolute;
+  bottom: calc(100% + var(--sp-1));
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-kbd);
+  background: var(--c-chart-bar-active);
+  color: var(--c-ink-on-primary);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ── X axis ── */
+.chart__hours {
+  grid-column: 2;
+  display: flex;
+  gap: var(--chart-bar-gap);
+}
+
+.chart__hour {
+  flex: 1;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-caption);
+  text-align: center;
+}
+
+.chart__hour--active {
+  color: var(--c-primary);
+  font-weight: var(--fw-bold);
+}
+
+@media (max-width: 767.98px) {
+  .chart {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Phone: no room for the axis; the highlighted bar still shows its total. */
+  .chart__axis {
+    display: none;
+  }
+
+  .chart__hours {
+    grid-column: 1;
+  }
+
+  /* Every other hour, so the labels do not collide. */
+  .chart__hour:nth-child(even) {
+    visibility: hidden;
+  }
+}

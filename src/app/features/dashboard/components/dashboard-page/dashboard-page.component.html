@@ -1,0 +1,184 @@
+@if (vm$ | async; as vm) {
+  <div class="page">
+    <header class="page__header">
+      <h1 class="page__title">Dashboard</h1>
+      @if (vm.report) {
+        <span class="page__date datetime"
+          >Hari ini · {{ vm.report.date | date: "d MMM y" }}</span
+        >
+      }
+      @if (vm.state.status === "ready") {
+        <p class="page__refresh" aria-live="polite">
+          @if (vm.state.refreshError) {
+            <i
+              class="pi pi-exclamation-circle page__refresh-icon"
+              aria-hidden="true"
+            ></i>
+            Gagal memperbarui ·
+            <button type="button" class="page__refresh-retry" (click)="retry()">
+              Coba lagi
+            </button>
+          } @else {
+            Diperbarui otomatis ·
+            <span class="datetime">{{
+              vm.state.updatedAt | date: "HH:mm"
+            }}</span>
+          }
+        </p>
+      }
+    </header>
+
+    @if (vm.state.status === "error") {
+      <section class="card">
+        <app-empty-state
+          icon="pi-exclamation-triangle"
+          title="Gagal memuat dashboard"
+          [danger]="true"
+          [description]="vm.state.message"
+        >
+          <button
+            pButton
+            type="button"
+            label="Coba lagi"
+            icon="pi pi-refresh"
+            (click)="retry()"
+          ></button>
+        </app-empty-state>
+      </section>
+    } @else {
+      <section
+        class="stats"
+        aria-label="Ringkasan hari ini"
+        [attr.aria-busy]="vm.loading"
+      >
+        <div class="stat stat--main">
+          <p class="stat__label">
+            <i class="pi pi-wallet stat__icon" aria-hidden="true"></i>
+            Omzet Hari Ini
+          </p>
+          @if (vm.report) {
+            <p class="stat__value money">
+              {{ vm.report.totalRevenue | rupiah }}
+            </p>
+          } @else {
+            <p-skeleton width="70%" height="var(--fs-stat-lg)" />
+          }
+        </div>
+        <div class="stat">
+          <p class="stat__label">
+            <i class="pi pi-receipt stat__icon" aria-hidden="true"></i>
+            Transaksi
+          </p>
+          @if (vm.report) {
+            <p class="stat__value num">{{ vm.report.transactionCount }}</p>
+          } @else {
+            <p-skeleton width="30%" height="var(--fs-stat-lg)" />
+          }
+        </div>
+        <div class="stat">
+          <p class="stat__label">
+            <i class="pi pi-chart-line stat__icon" aria-hidden="true"></i>
+            Rata-rata<span class="stat__label-rest"> Transaksi</span>
+          </p>
+          @if (vm.report) {
+            <p class="stat__value money">
+              {{ vm.report.averageTransaction | rupiah }}
+            </p>
+          } @else {
+            <p-skeleton width="60%" height="var(--fs-stat-lg)" />
+          }
+        </div>
+        <!-- Phone: the Stok Menipis panel header carries this count (mockup 9a). -->
+        <div class="stat stat--warning stat--low-stock">
+          <p class="stat__label">
+            <i
+              class="pi pi-exclamation-circle stat__icon"
+              aria-hidden="true"
+            ></i>
+            Stok Menipis
+          </p>
+          @if (vm.report) {
+            <p class="stat__value num">{{ vm.report.lowStockCount }}</p>
+          } @else {
+            <p-skeleton width="20%" height="var(--fs-stat-lg)" />
+          }
+        </div>
+      </section>
+
+      <div class="content">
+        <section class="card card--chart" aria-labelledby="hourly-title">
+          <header class="card__header">
+            <h2 class="card__title" id="hourly-title">Penjualan per Jam</h2>
+            @if (vm.report && !vm.empty) {
+              <span class="card__meta datetime">
+                {{ vm.report.hourlySales[0].hour | number: "2.0-0" }}:00 –
+                {{
+                  vm.report.hourlySales[vm.report.hourlySales.length - 1].hour
+                    | number: "2.0-0"
+                }}:00
+              </span>
+            }
+          </header>
+          @if (vm.loading) {
+            <div class="card__body" aria-hidden="true">
+              <p-skeleton width="100%" height="var(--chart-h)" />
+            </div>
+          } @else if (vm.empty) {
+            <app-empty-state
+              icon="pi-chart-bar"
+              title="Belum ada transaksi hari ini"
+              description="Grafik penjualan per jam akan muncul setelah transaksi pertama disimpan di Layar Kasir."
+            >
+              <a
+                pButton
+                routerLink="/kasir"
+                icon="pi pi-shopping-cart"
+                label="Buka Layar Kasir"
+              ></a>
+            </app-empty-state>
+          } @else if (vm.report) {
+            <div class="card__body">
+              <app-hourly-sales-chart
+                [hours]="vm.report.hourlySales"
+                [currentHour]="vm.currentHour"
+              />
+            </div>
+          }
+        </section>
+
+        <section class="card card--low-stock" aria-labelledby="low-stock-title">
+          <header class="card__header">
+            <h2 class="card__title" id="low-stock-title">
+              <i
+                class="pi pi-exclamation-circle card__title-icon"
+                aria-hidden="true"
+              ></i>
+              Stok Menipis
+            </h2>
+            @if (vm.report && vm.report.lowStockCount > 0) {
+              <span class="card__count num"
+                >{{ vm.report.lowStockCount }} barang</span
+              >
+            }
+          </header>
+          <app-low-stock-list
+            [products]="vm.report?.lowStockProducts ?? []"
+            [loading]="vm.loading"
+          />
+        </section>
+
+        <section class="card card--top" aria-labelledby="top-title">
+          <header class="card__header">
+            <h2 class="card__title" id="top-title">
+              5 Barang Terlaris Hari Ini
+            </h2>
+          </header>
+          <app-top-products-list
+            [products]="vm.report?.topProducts ?? []"
+            [loading]="vm.loading"
+          />
+        </section>
+      </div>
+    }
+  </div>
+}

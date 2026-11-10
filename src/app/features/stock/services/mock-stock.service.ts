@@ -160,6 +160,14 @@ export class MockStockService extends StockService {
     return this.respond(this.product(product.id)!);
   }
 
+  protected override requestProduct(id: number): Observable<StockProductDto> {
+    const product = this.product(id);
+    if (!product) {
+      return this.fail({ code: 'NOT_FOUND', message: 'Barang tidak ditemukan', status: 404 });
+    }
+    return this.respond(product);
+  }
+
   protected override requestStockIn(body: StockInRequestDto): Observable<StockInResponseDto> {
     const fieldErrors = body.items.flatMap((item, i) =>
       Number.isInteger(item.qty) && item.qty > 0

@@ -1,0 +1,45 @@
+@if (!loading && products.length === 0) {
+  <app-empty-state
+    icon="pi-shopping-bag"
+    title="Belum ada barang terjual hari ini"
+    description="Barang terlaris akan muncul setelah ada transaksi."
+  />
+} @else {
+  <div
+    class="table"
+    role="table"
+    aria-label="Barang terlaris hari ini"
+    [attr.aria-busy]="loading"
+  >
+    <div class="row row--head" role="row">
+      <div class="cell" role="columnheader">Nama Barang</div>
+      <div class="cell cell--end" role="columnheader">Qty Terjual</div>
+      <div class="cell cell--end" role="columnheader">Total</div>
+    </div>
+
+    @if (loading) {
+      @for (row of skeletonRows; track row) {
+        <div class="row row--body" aria-hidden="true">
+          <p-skeleton width="70%" height="var(--fs-row-name)" />
+          <p-skeleton width="50%" height="var(--fs-row-name)" />
+          <p-skeleton width="80%" height="var(--fs-row-name)" />
+        </div>
+      }
+    } @else {
+      @for (product of products; track product.productId) {
+        <div class="row row--body" role="row">
+          <div class="cell cell--product" role="cell">
+            <span class="name" [title]="product.name">{{ product.name }}</span>
+            <span class="sku">{{ product.sku }}</span>
+          </div>
+          <div class="cell cell--end qty num" role="cell">
+            {{ product.qtySold }}
+          </div>
+          <div class="cell cell--end total money" role="cell">
+            {{ product.total | rupiah }}
+          </div>
+        </div>
+      }
+    }
+  </div>
+}

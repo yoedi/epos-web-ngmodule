@@ -6,6 +6,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
 
@@ -19,6 +20,8 @@ describe('StockInPageComponent', () => {
   let fixture: ComponentFixture<StockInPageComponent>;
   let service: jasmine.SpyObj<StockService>;
   let messages: jasmine.SpyObj<MessageService>;
+  let router: jasmine.SpyObj<Router>;
+  let route: { snapshot: { queryParamMap: ParamMap } };
 
   const air: StockProduct = {
     id: 6,
@@ -67,17 +70,23 @@ describe('StockInPageComponent', () => {
       'findByBarcode',
       'stockIn',
       'recentStockIn',
+      'getProduct',
     ]);
     service.searchProducts.and.returnValue(of([]));
     service.findByBarcode.and.returnValue(of(air));
     service.recentStockIn.and.returnValue(of([]));
     messages = jasmine.createSpyObj<MessageService>('MessageService', ['add']);
+    router = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    router.navigate.and.resolveTo(true);
+    route = { snapshot: { queryParamMap: convertToParamMap({}) } };
 
     await TestBed.configureTestingModule({
       imports: [StockModule, NoopAnimationsModule],
       providers: [
         { provide: StockService, useValue: service },
         { provide: MessageService, useValue: messages },
+        { provide: Router, useValue: router },
+        { provide: ActivatedRoute, useValue: route },
       ],
     }).compileComponents();
 
@@ -163,5 +172,48 @@ describe('StockInPageComponent', () => {
     fixture.detectChanges();
     expect(text()).toContain('Gagal memuat riwayat');
     expect(text()).toContain('Server sibuk');
+  });
+
+  describe('opened from "Tambah Stok" on the Dashboard', () => {
+    function open(produk: string): void {
+      fixture.destroy();
+      route.snapshot.queryParamMap = convertToParamMap({ produk });
+      fixture = TestBed.createComponent(StockInPageComponent);
+      fixture.detectChanges();
+    }
+
+    it('picks the product and moves focus to Jumlah', fakeAsync(() => {
+      service.getProduct.and.returnValue(of(air));
+      open('6');
+      tick(300);
+      fixture.detectChanges();
+
+      expect(service.getProduct).toHaveBeenCalledWith(6);
+      expect(host().querySelector<HTMLInputElement>('#stock-picker')!.value).toBe('Air Mineral 600 ml');
+      expect(fixture.componentInstance.selected).toEqual(air);
+      expect(document.activeElement?.closest('app-qty-stepper')).toBeTruthy();
+      // The param is dropped so a reload does not pick it again.
+      expect(router.navigate).toHaveBeenCalledWith(
+        [],
+        jasmine.objectContaining({ queryParams: { produk: null }, replaceUrl: true }),
+      );
+    }));
+
+    it('shows the error under Barang when the product does not exist', fakeAsync(() => {
+      const notFound: AppError = { code: 'NOT_FOUND', message: 'Barang tidak ditemukan', status: 404 };
+      service.getProduct.and.returnValue(throwError(() => notFound));
+      open('99');
+      tick(300);
+      fixture.detectChanges();
+
+      expect(text()).toContain('Barang tidak ditemukan');
+      expect(fixture.componentInstance.selected).toBeNull();
+    }));
+
+    it('ignores an invalid id', () => {
+      open('abc');
+
+      expect(service.getProduct).not.toHaveBeenCalled();
+    });
   });
 });

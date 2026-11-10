@@ -1,0 +1,241 @@
+.page {
+  display: grid;
+  gap: var(--gap-card);
+  padding: var(--pad-content);
+}
+
+/* ── Page header ── */
+.page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+
+.page__title {
+  margin: 0;
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-heading);
+}
+
+.page__date {
+  color: var(--c-ink-muted);
+}
+
+.page__refresh {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-1);
+  margin: 0;
+  margin-inline-start: auto;
+  color: var(--c-ink-muted);
+}
+
+.page__refresh-icon {
+  color: var(--c-warning);
+}
+
+.page__refresh-retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-primary);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.page__refresh-retry:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+/* ── Summary cards ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-card);
+}
+
+.stat {
+  display: grid;
+  align-content: start;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+}
+
+.stat__label,
+.stat__value {
+  margin: 0;
+}
+
+.stat__label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+}
+
+.stat__icon {
+  color: var(--c-primary);
+  font-size: var(--fs-body);
+}
+
+.stat__value {
+  font-size: var(--fs-stat-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-heading);
+  line-height: var(--lh-tight);
+}
+
+.stat--warning {
+  border-color: var(--c-warning-border);
+}
+
+.stat--warning .stat__label {
+  color: var(--c-warning-ink);
+}
+
+.stat--warning .stat__icon {
+  color: var(--c-warning);
+}
+
+.stat--warning .stat__value {
+  color: var(--c-warning-ink);
+}
+
+/* ── Content cards ── */
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, var(--dashboard-main-fr)) minmax(0, 1fr);
+  grid-template-areas:
+    "chart low"
+    "top low";
+  align-items: start;
+  gap: var(--gap-card);
+}
+
+.card {
+  overflow: hidden;
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+}
+
+.card--chart {
+  grid-area: chart;
+}
+
+.card--low-stock {
+  grid-area: low;
+  align-self: stretch;
+}
+
+.card--top {
+  grid-area: top;
+}
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-semibold);
+}
+
+/* The warning icon only appears on the phone, where the stat card is hidden. */
+.card__title-icon {
+  display: none;
+  color: var(--c-warning);
+}
+
+.card__meta {
+  color: var(--c-ink-muted);
+}
+
+.card__count {
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--c-warning-bg);
+  color: var(--c-warning-ink);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+}
+
+.card__body {
+  padding: 0 var(--sp-4) var(--sp-4);
+}
+
+/* Tablet: one column, low stock right after the chart. */
+@media (max-width: 1279.98px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "chart"
+      "low"
+      "top";
+  }
+}
+
+/* Phone (mockup 9a): omzet on its own row, low stock and best sellers above the chart. */
+@media (max-width: 767.98px) {
+  .page__refresh {
+    margin-inline-start: 0;
+    flex-basis: 100%;
+  }
+
+  .stat--main {
+    grid-column: 1 / -1;
+  }
+
+  .stat--low-stock {
+    display: none;
+  }
+
+  .stat:not(.stat--main) .stat__value {
+    font-size: var(--fs-stat);
+  }
+
+  .stat__icon,
+  .stat__label-rest {
+    display: none;
+  }
+
+  .content {
+    grid-template-areas:
+      "low"
+      "top"
+      "chart";
+  }
+
+  .card--low-stock {
+    border-color: var(--c-warning-border);
+  }
+
+  .card__title-icon {
+    display: inline;
+  }
+}

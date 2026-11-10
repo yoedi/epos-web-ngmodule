@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
 import { RoleGuard } from './core/auth/role.guard';
 import { ShellComponent } from './core/layout/shell/shell.component';
-import { PlaceholderComponent } from './placeholder/placeholder.component';
 
 const OWNER = { role: 'OWNER' };
 
@@ -26,12 +25,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./features/cashier/cashier.module').then((m) => m.CashierModule),
       },
-      // Placeholders until each feature module exists; swap for loadChildren.
       {
+        // Owner only (PRD section 6).
         path: 'dashboard',
-        component: PlaceholderComponent,
         canActivate: [RoleGuard],
-        data: { title: 'Dashboard', ...OWNER },
+        data: OWNER,
+        loadChildren: () =>
+          import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
       {
         // Both roles: the owner sees every sale, the cashier only their own of today (PRD section 6).

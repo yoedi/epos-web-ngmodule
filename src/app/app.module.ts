@@ -18,13 +18,12 @@ import { CoreModule } from './core/core.module';
 import { PRIMENG_ID } from './core/i18n/primeng-id';
 import { AuthInterceptor } from './core/http/auth.interceptor';
 import { ErrorInterceptor } from './core/http/error.interceptor';
-import { PlaceholderComponent } from './placeholder/placeholder.component';
 
 // Indonesian month names for DatePipe: "18 Sep 2026, 14:32" (PRD section 7).
 registerLocaleData(localeId);
 
 @NgModule({
-  declarations: [AppComponent, PlaceholderComponent],
+  declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, CoreModule, ToastModule],
   providers: [
     { provide: LOCALE_ID, useValue: 'id' },

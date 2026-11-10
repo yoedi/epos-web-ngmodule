@@ -23,7 +23,7 @@ const OPENING_MINUTE = 7 * 60 + 30;
 const CLOSING_MINUTE = 21 * 60;
 const CASH_STEPS = [5000, 10000, 20000, 50000, 100000];
 
-type StoredSale = Omit<SaleDetailDto, 'store'>;
+export type StoredSale = Omit<SaleDetailDto, 'store'>;
 
 /** Sample cart from PRD section 12: total Rp 144.500, paid Rp 150.000. */
 const PRD_SAMPLE_CART: readonly [number, number][] = [
@@ -130,7 +130,7 @@ function withPrdSample(sale: StoredSale): StoredSale {
   };
 }
 
-function buildSales(now: Date): StoredSale[] {
+export function buildSales(now: Date): StoredSale[] {
   const sales: StoredSale[] = [];
   for (let back = MOCK_DAYS - 1; back >= 0; back--) {
     const date = jakartaToday(new Date(now.getTime() - back * DAY_MS));

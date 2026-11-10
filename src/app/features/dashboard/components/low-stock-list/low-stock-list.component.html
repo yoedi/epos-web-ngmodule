@@ -1,0 +1,71 @@
+@if (!loading && products.length === 0) {
+  <app-empty-state
+    icon="pi-check-circle"
+    title="Semua stok aman"
+    description="Belum ada barang yang mencapai stok minimum."
+  />
+} @else {
+  <div
+    class="table"
+    role="table"
+    aria-label="Stok menipis"
+    [attr.aria-busy]="loading"
+  >
+    <div class="row row--head" role="row">
+      <div class="cell" role="columnheader">Nama Barang</div>
+      <div class="cell cell--end" role="columnheader">Stok</div>
+      <div class="cell cell--end" role="columnheader">Min</div>
+      <div class="cell cell--end" role="columnheader">
+        <span class="sr-only">Aksi</span>
+      </div>
+    </div>
+
+    @if (loading) {
+      @for (row of skeletonRows; track row) {
+        <div class="row row--body" aria-hidden="true">
+          <p-skeleton width="80%" height="var(--fs-row-name)" />
+          <p-skeleton width="60%" height="var(--fs-row-name)" />
+          <p-skeleton width="60%" height="var(--fs-row-name)" />
+          <p-skeleton width="100%" height="var(--btn-icon)" />
+        </div>
+      }
+    } @else {
+      @for (product of products; track product.productId) {
+        <div class="row row--body" role="row">
+          <div class="cell cell--product" role="cell">
+            <span class="name" [title]="product.name">{{ product.name }}</span>
+            <span class="meta">
+              <span class="sku">{{ product.sku }}</span>
+              <span class="meta__min num"> · min {{ product.minStock }}</span>
+              <app-stock-badge class="meta__badge" [status]="product.status" />
+            </span>
+          </div>
+          <div class="cell cell--end cell--stock" role="cell">
+            <span
+              class="stock num"
+              [class.stock--out]="product.status === 'OUT_OF_STOCK'"
+              [class.stock--low]="product.status === 'LOW_STOCK'"
+            >
+              {{ product.stock }}
+            </span>
+            <app-stock-badge class="stock__badge" [status]="product.status" />
+          </div>
+          <div class="cell cell--end cell--min num" role="cell">
+            {{ product.minStock }}
+          </div>
+          <div class="cell cell--end" role="cell">
+            <a
+              class="add"
+              routerLink="/stok/masuk"
+              [queryParams]="{ produk: product.productId }"
+              [attr.aria-label]="'Tambah Stok ' + product.name"
+            >
+              <i class="pi pi-plus" aria-hidden="true"></i>
+              <span class="add__label">Tambah Stok</span>
+            </a>
+          </div>
+        </div>
+      }
+    }
+  </div>
+}

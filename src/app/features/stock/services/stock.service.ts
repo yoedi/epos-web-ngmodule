@@ -47,6 +47,11 @@ export class StockService {
     return this.requestByBarcode(code).pipe(map(toStockProduct));
   }
 
+  /** GET /products/{id}. Fails with NOT_FOUND (shown by the caller, not as a toast). */
+  getProduct(id: number): Observable<StockProduct> {
+    return this.requestProduct(id).pipe(map(toStockProduct));
+  }
+
   stockIn(note: string, lines: readonly StockInLine[]): Observable<StockMovement[]> {
     return this.requestStockIn(toStockInRequest(note, lines)).pipe(
       map((body) => body.movements.map(toStockMovement)),
@@ -88,6 +93,12 @@ export class StockService {
       `${this.url}/products/barcode/${encodeURIComponent(code)}`,
       { context: new HttpContext().set(INLINE_ERROR_CODES, new Set(['NOT_FOUND'])) },
     );
+  }
+
+  protected requestProduct(id: number): Observable<StockProductDto> {
+    return this.http.get<StockProductDto>(`${this.url}/products/${id}`, {
+      context: new HttpContext().set(INLINE_ERROR_CODES, new Set(['NOT_FOUND'])),
+    });
   }
 
   protected requestStockIn(body: StockInRequestDto): Observable<StockInResponseDto> {
