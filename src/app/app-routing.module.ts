@@ -35,7 +35,12 @@ const routes: Routes = [
         loadChildren: () =>
           import('./features/product/product.module').then((m) => m.ProductModule),
       },
-      { path: 'kategori', component: PlaceholderComponent, data: { title: 'Kategori' } },
+      {
+        // Both roles: the owner manages, the cashier only views (PRD section 6).
+        path: 'kategori',
+        loadChildren: () =>
+          import('./features/category/category.module').then((m) => m.CategoryModule),
+      },
       {
         path: 'stok',
         canActivate: [RoleGuard],

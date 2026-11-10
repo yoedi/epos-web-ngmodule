@@ -18,6 +18,8 @@ const INLINE_CODES = new Set([
   'INSUFFICIENT_STOCK',
   'INSUFFICIENT_PAYMENT',
   'INVALID_CREDENTIALS',
+  'DUPLICATE_CATEGORY', // category form field
+  'CATEGORY_IN_USE', // "Kategori tidak bisa dihapus" dialog
 ]);
 
 const FORBIDDEN_MESSAGE = 'Anda tidak berwenang melakukan tindakan ini.';

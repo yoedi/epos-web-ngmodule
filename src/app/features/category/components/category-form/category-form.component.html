@@ -1,0 +1,46 @@
+<form class="form" (ngSubmit)="submit()" novalidate>
+  <div class="field">
+    <label class="field__label" for="category-name">
+      Nama Kategori<span class="field__required" aria-hidden="true">*</span>
+    </label>
+    <input
+      #nameInput
+      pInputText
+      id="category-name"
+      class="field__input"
+      type="text"
+      autocomplete="off"
+      required
+      [formControl]="name"
+      [attr.aria-invalid]="nameError ? true : null"
+      [attr.aria-describedby]="nameError ? 'category-name-error' : null"
+    />
+    @if (nameError; as message) {
+      <p id="category-name-error" class="field__error">{{ message }}</p>
+    }
+  </div>
+
+  @if (formError) {
+    <p class="form__error" role="alert">{{ formError }}</p>
+  }
+
+  <div class="form__actions">
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [outlined]="true"
+      label="Batal"
+      [disabled]="submitting"
+      (click)="cancelled.emit()"
+    ></button>
+    <button
+      pButton
+      type="submit"
+      class="form__submit"
+      label="Simpan"
+      [loading]="submitting"
+      [disabled]="submitting"
+    ></button>
+  </div>
+</form>

@@ -1,0 +1,59 @@
+<div
+  class="table"
+  role="table"
+  aria-label="Daftar kategori"
+  [class.table--readonly]="!canManage"
+  [attr.aria-busy]="loading"
+>
+  <div class="row row--head" role="row">
+    <div class="cell" role="columnheader">Nama Kategori</div>
+    <div class="cell cell--end" role="columnheader">Jumlah Produk</div>
+    @if (canManage) {
+      <div class="cell cell--end" role="columnheader">Aksi</div>
+    }
+  </div>
+
+  @if (loading) {
+    @for (row of skeletonRows; track row) {
+      <div class="row row--body" aria-hidden="true">
+        <div class="cell"><p-skeleton width="50%" height="var(--fs-row-name)" /></div>
+        <div class="cell cell--end"><p-skeleton width="40%" height="var(--fs-row-name)" /></div>
+        @if (canManage) {
+          <div class="cell"><p-skeleton width="100%" height="var(--btn-icon)" /></div>
+        }
+      </div>
+    }
+  } @else {
+    @for (category of categories; track category.id) {
+      <div class="row row--body" role="row">
+        <div class="cell name" role="cell" [title]="category.name">{{ category.name }}</div>
+        <div class="cell cell--end count" role="cell">
+          <span class="num">{{ category.productCount }}</span>
+          <span class="count__unit">produk</span>
+        </div>
+        @if (canManage) {
+          <div class="cell cell--end actions" role="cell">
+            <button
+              type="button"
+              class="action"
+              title="Edit"
+              [attr.aria-label]="'Edit ' + category.name"
+              (click)="edit.emit(category)"
+            >
+              <i class="pi pi-pencil" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="action action--danger"
+              title="Hapus"
+              [attr.aria-label]="'Hapus ' + category.name"
+              (click)="remove.emit(category)"
+            >
+              <i class="pi pi-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

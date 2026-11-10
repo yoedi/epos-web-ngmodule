@@ -1,0 +1,109 @@
+@if (vm$ | async; as vm) {
+  <div class="page" [class.page--manage]="vm.canManage">
+    <header class="page__header">
+      <h1 class="page__title">Kategori</h1>
+      @if (vm.state.status === 'ready') {
+        <span class="page__count num">{{ vm.state.categories.length }} kategori</span>
+      }
+      @if (vm.canManage) {
+        <button
+          pButton
+          type="button"
+          class="page__add"
+          icon="pi pi-plus"
+          label="Tambah Kategori"
+          (click)="openCreate()"
+        ></button>
+      }
+    </header>
+
+    <section class="results" aria-live="polite">
+      @if (vm.state.status === 'error') {
+        <app-empty-state
+          icon="pi-exclamation-triangle"
+          title="Gagal memuat kategori"
+          [danger]="true"
+          [description]="vm.state.message"
+        >
+          <button pButton type="button" label="Coba lagi" icon="pi pi-refresh" (click)="retry()"></button>
+        </app-empty-state>
+      } @else if (vm.state.status === 'ready' && vm.state.categories.length === 0) {
+        @if (vm.canManage) {
+          <app-empty-state icon="pi-tags" title="Belum ada kategori. Tambahkan kategori pertama Anda">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-plus"
+              label="Tambah Kategori"
+              (click)="openCreate()"
+            ></button>
+          </app-empty-state>
+        } @else {
+          <app-empty-state icon="pi-tags" title="Belum ada kategori." />
+        }
+      } @else {
+        <app-category-table
+          [categories]="vm.state.status === 'ready' ? vm.state.categories : []"
+          [loading]="vm.state.status === 'loading'"
+          [canManage]="vm.canManage"
+          (edit)="openEdit($event)"
+          (remove)="askDelete($event)"
+        />
+      }
+    </section>
+  </div>
+
+  <p-dialog
+    [header]="editing ? 'Edit Kategori' : 'Tambah Kategori'"
+    [visible]="formOpen"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="!formBusy"
+    [closeOnEscape]="!formBusy"
+    [style]="dialogStyle"
+    (visibleChange)="!$event && closeForm()"
+    (onShow)="categoryForm?.focusFirstField()"
+  >
+    @if (formOpen) {
+      <app-category-form
+        [category]="editing"
+        (saved)="handleSaved($event)"
+        (cancelled)="closeForm()"
+        (submittingChange)="formBusy = $event"
+      />
+    }
+  </p-dialog>
+
+  <app-confirm-dialog
+    title="Hapus kategori?"
+    confirmLabel="Hapus"
+    [danger]="true"
+    [visible]="toDelete !== null"
+    [busy]="deleteBusy"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()"
+  >
+    <p class="dialog-text">Kategori {{ toDelete?.name }} akan dihapus.</p>
+  </app-confirm-dialog>
+
+  <p-dialog
+    header="Kategori tidak bisa dihapus"
+    [visible]="blockedMessage !== null"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="dialogStyle"
+    (visibleChange)="!$event && closeBlocked()"
+  >
+    <div class="blocked" role="alert">
+      <p class="dialog-text">{{ blockedMessage }}</p>
+      <p class="dialog-text dialog-text--muted">
+        Pindahkan produk tersebut ke kategori lain lewat menu Daftar Produk, lalu coba hapus lagi.
+      </p>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Mengerti" (click)="closeBlocked()"></button>
+    </ng-template>
+  </p-dialog>
+}

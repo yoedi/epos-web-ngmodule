@@ -153,6 +153,9 @@
   --drawer-w: 440px; /* form tambah/edit */
   --dialog-w-sm: 400px; /* dialog konfirmasi */
 
+  /* ── Kategori (belum ada mockup; mengikuti Daftar Produk) ── */
+  --col-count: 136px; /* kolom Jumlah Produk */
+
   /* ── Breakpoint (acuan, dipakai di media query) ─────────── */
   --bp-tablet: 768px;
   --bp-laptop: 1280px;

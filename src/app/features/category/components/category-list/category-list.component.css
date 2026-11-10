@@ -1,0 +1,72 @@
+.page {
+  display: grid;
+  gap: var(--gap-card);
+  padding: var(--pad-content);
+}
+
+.page__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.page__title {
+  margin: 0;
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-heading);
+}
+
+.page__count {
+  color: var(--c-ink-secondary);
+}
+
+.page__add {
+  flex: none;
+  margin-inline-start: auto;
+  box-shadow: var(--sh-primary);
+  font-weight: var(--fw-bold);
+}
+
+.results {
+  overflow: hidden;
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+}
+
+.blocked {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.dialog-text {
+  margin: 0;
+}
+
+.dialog-text--muted {
+  color: var(--c-ink-secondary);
+}
+
+@media (max-width: 767.98px) {
+  .page--manage {
+    /* Room for the floating button over the last card */
+    padding-bottom: calc(var(--btn-h) + var(--sp-6) * 2);
+  }
+
+  .page__add {
+    position: fixed;
+    inset-inline-end: var(--sp-4);
+    bottom: calc(var(--bottom-nav-h) + var(--sp-4) + env(safe-area-inset-bottom));
+    z-index: 1;
+    border-radius: var(--r-pill);
+  }
+
+  .results {
+    overflow: visible;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
