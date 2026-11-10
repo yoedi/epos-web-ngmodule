@@ -52,18 +52,18 @@ const routes: Routes = [
           import('./features/category/category.module').then((m) => m.CategoryModule),
       },
       {
+        // Placeholder until Penyesuaian Stok (PRD 9.8) moves into StockModule.
+        path: 'stok/penyesuaian',
+        component: PlaceholderComponent,
+        canActivate: [RoleGuard],
+        data: { title: 'Penyesuaian Stok', ...OWNER },
+      },
+      {
+        // Owner only (PRD section 6). StockModule redirects /stok to /stok/masuk.
         path: 'stok',
         canActivate: [RoleGuard],
         data: OWNER,
-        children: [
-          { path: '', pathMatch: 'full', redirectTo: 'masuk' },
-          { path: 'masuk', component: PlaceholderComponent, data: { title: 'Stok Masuk' } },
-          {
-            path: 'penyesuaian',
-            component: PlaceholderComponent,
-            data: { title: 'Penyesuaian Stok' },
-          },
-        ],
+        loadChildren: () => import('./features/stock/stock.module').then((m) => m.StockModule),
       },
     ],
   },

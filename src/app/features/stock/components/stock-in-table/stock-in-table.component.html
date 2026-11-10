@@ -1,0 +1,39 @@
+<div class="table" role="table" aria-label="Daftar barang stok masuk">
+  <div class="row row--head" role="row">
+    <div class="cell" role="columnheader">SKU</div>
+    <div class="cell" role="columnheader">Nama Barang</div>
+    <div class="cell cell--end" role="columnheader">Jumlah</div>
+    <div class="cell cell--end" role="columnheader">Stok Sebelum → Sesudah</div>
+    <div class="cell" role="columnheader"><span class="sr-only">Aksi</span></div>
+  </div>
+
+  @for (line of lines; track line.product.id) {
+    <div
+      class="row row--body"
+      role="row"
+      [class.row--highlight]="line.product.id === highlightId"
+    >
+      <div class="cell cell--sku sku" role="cell">{{ line.product.sku }}</div>
+      <div class="cell cell--name" role="cell" [title]="line.product.name">
+        {{ line.product.name }}
+      </div>
+      <div class="cell cell--end cell--qty num" role="cell">+{{ line.qty }}</div>
+      <div class="cell cell--end cell--change num" role="cell">
+        <span class="change__before">{{ line.product.stock }}</span>
+        <i class="pi pi-arrow-right change__arrow" aria-label="menjadi"></i>
+        <span class="change__after">{{ stockAfter(line) }}</span>
+      </div>
+      <div class="cell cell--end cell--remove" role="cell">
+        <button
+          type="button"
+          class="remove"
+          [disabled]="disabled"
+          [attr.aria-label]="'Hapus ' + line.product.name + ' dari daftar'"
+          (click)="remove.emit(line)"
+        >
+          <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  }
+</div>

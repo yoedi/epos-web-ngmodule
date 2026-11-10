@@ -1,0 +1,199 @@
+.page {
+  display: grid;
+  gap: var(--gap-card);
+  padding: var(--pad-content);
+}
+
+.page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+.page__title {
+  margin: 0;
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-heading);
+}
+
+.page__subtitle {
+  margin: 0;
+  color: var(--c-ink-muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--stock-history-w);
+  align-items: start;
+  gap: var(--gap-card);
+}
+
+/* ── Entry card ── */
+/* No overflow: hidden here, the picker's result list must overflow the card. */
+.entry {
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+}
+
+.entry__form {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
+
+.entry__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: end;
+  gap: var(--sp-3);
+}
+
+.entry__picker,
+.entry__qty,
+.entry__note {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.entry__label {
+  font-weight: var(--fw-semibold);
+}
+
+/* Same height as the Barang field next to it. */
+.entry__qty {
+  --stepper-h: var(--input-h-lg);
+}
+
+.entry__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: var(--input-h-lg);
+  padding-inline: var(--sp-6);
+  border: var(--border-w) solid var(--c-primary-tint-border);
+  border-radius: var(--r-control);
+  background: var(--c-primary-tint-bg);
+  color: var(--c-primary);
+  font: inherit;
+  font-size: var(--fs-input-lg);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.entry__add:hover:not(:disabled) {
+  border-color: var(--c-primary);
+}
+
+.entry__add:disabled {
+  cursor: not-allowed;
+  color: var(--c-ink-muted);
+}
+
+.entry__add:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+.entry__note-input {
+  width: 100%;
+  min-height: var(--input-h-lg);
+  font-size: var(--fs-input-lg);
+}
+
+.field-error {
+  margin: 0;
+  color: var(--c-danger);
+}
+
+.entry__empty {
+  border-top: var(--border-w) solid var(--c-border);
+}
+
+/* ── Footer ── */
+.entry__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-fill-card-footer);
+  border-top: var(--border-w) solid var(--c-border);
+  border-radius: 0 0 var(--r-card) var(--r-card);
+}
+
+.entry__errors {
+  flex-basis: 100%;
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-6);
+  border-radius: var(--r-control);
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger);
+}
+
+.entry__summary {
+  margin: 0;
+  color: var(--c-ink-secondary);
+}
+
+.entry__actions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.entry__actions button {
+  min-height: var(--btn-h);
+}
+
+.entry__save {
+  box-shadow: var(--sh-primary);
+  font-weight: var(--fw-bold);
+}
+
+/* Tablet: the history moves below the entry card. */
+@media (max-width: 1279.98px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phone: one-column form, actions stick to the bottom (PRD section 7). */
+@media (max-width: 767.98px) {
+  .entry__row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .entry__picker {
+    grid-column: 1 / -1;
+  }
+
+  .entry__qty {
+    --stepper-h: var(--btn-h);
+  }
+
+  .entry__add {
+    min-height: var(--btn-h);
+  }
+
+  .entry__footer {
+    position: sticky;
+    bottom: 0;
+  }
+
+  .entry__actions {
+    flex: 1;
+  }
+
+  .entry__actions button {
+    flex: 1;
+  }
+
+  .entry__actions .entry__save {
+    flex: 2;
+  }
+}

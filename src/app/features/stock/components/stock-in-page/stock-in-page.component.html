@@ -1,0 +1,117 @@
+<div class="page">
+  <header class="page__header">
+    <h1 class="page__title">Stok Masuk</h1>
+    <p class="page__subtitle">Tambah stok dari pembelian atau belanja grosir</p>
+  </header>
+
+  <div class="layout">
+    @if (draft$ | async; as draft) {
+      <section class="entry" aria-label="Input stok masuk">
+        <div class="entry__form">
+          <div class="entry__row">
+            <div class="entry__picker">
+              <app-stock-product-picker (selectionChange)="onSelection($event)" />
+            </div>
+
+            <div class="entry__qty">
+              <!-- The stepper input carries its own aria-label ("Jumlah <barang>"). -->
+              <span class="entry__label" aria-hidden="true">Jumlah</span>
+              <div #qtyField (keydown.enter)="onQtyEnter()">
+                <app-qty-stepper
+                  [value]="qty"
+                  [label]="selected?.name ?? 'barang'"
+                  (valueChange)="setQty($event)"
+                />
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="entry__add"
+              [disabled]="submitting"
+              (click)="add()"
+            >
+              <i class="pi pi-plus" aria-hidden="true"></i>
+              Tambah
+            </button>
+          </div>
+          @if (pickerError) {
+            <p class="field-error" role="alert">{{ pickerError }}</p>
+          }
+          @if (qtyError) {
+            <p class="field-error" role="alert">{{ qtyError }}</p>
+          }
+
+          <div class="entry__note">
+            <label class="entry__label" for="stock-note">Catatan</label>
+            <input
+              pInputText
+              id="stock-note"
+              class="entry__note-input"
+              type="text"
+              autocomplete="off"
+              placeholder="Contoh: Belanja grosir 16 Sep"
+              [formControl]="note"
+            />
+          </div>
+        </div>
+
+        @if (draft.itemCount === 0) {
+          <div class="entry__empty">
+            <app-empty-state
+              icon="pi-inbox"
+              title="Belum ada barang di daftar"
+              description="Scan barcode atau cari barang, isi jumlah, lalu tekan Tambah."
+            />
+          </div>
+        } @else {
+          <app-stock-in-table
+            [lines]="draft.lines"
+            [highlightId]="highlightId"
+            [disabled]="submitting"
+            (remove)="remove($event)"
+          />
+        }
+
+        <footer class="entry__footer">
+          @if (saveErrors.length > 0) {
+            <ul class="entry__errors" role="alert">
+              @for (message of saveErrors; track $index) {
+                <li>{{ message }}</li>
+              }
+            </ul>
+          }
+          <p class="entry__summary num" aria-live="polite">
+            {{ draft.itemCount }} barang · total +{{ draft.units }} unit
+          </p>
+          <div class="entry__actions">
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              label="Batal"
+              [outlined]="true"
+              [disabled]="submitting || (draft.itemCount === 0 && !note.value)"
+              (click)="cancel()"
+            ></button>
+            <button
+              pButton
+              type="button"
+              class="entry__save"
+              label="Simpan Stok Masuk"
+              [loading]="submitting"
+              [disabled]="submitting || draft.itemCount === 0"
+              (click)="save()"
+            ></button>
+          </div>
+        </footer>
+      </section>
+    }
+
+    <app-stock-in-history
+      class="layout__history"
+      [state]="(history$ | async) ?? { status: 'loading' }"
+      (retry)="retryHistory()"
+    />
+  </div>
+</div>

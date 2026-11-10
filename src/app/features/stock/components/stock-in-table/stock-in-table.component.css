@@ -1,0 +1,155 @@
+:host {
+  display: block;
+}
+
+.table {
+  --columns: var(--col-sku) minmax(var(--col-name-min), 1fr) var(--col-item-count)
+    var(--col-stock-change) var(--btn-icon);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--columns);
+  align-items: center;
+  gap: var(--sp-3);
+  padding-inline: var(--sp-4);
+}
+
+.row--head {
+  min-height: var(--table-head-h);
+  background: var(--c-fill-table-head);
+  border-block: var(--border-w) solid var(--c-border);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-table-head);
+  text-transform: uppercase;
+}
+
+.row--body {
+  min-height: var(--table-row-h);
+  border-bottom: var(--border-w) solid var(--c-border-row);
+}
+
+.row--body:hover {
+  background: var(--c-fill-row-hover);
+}
+
+.row--highlight,
+.row--highlight:hover {
+  background: var(--c-primary-tint-bg);
+}
+
+.cell {
+  min-width: 0;
+}
+
+.cell--end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cell--sku {
+  color: var(--c-ink-secondary);
+}
+
+.row--highlight .cell--sku {
+  color: var(--c-primary-tint-ink);
+}
+
+.cell--name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-row-name);
+  font-weight: var(--fw-semibold);
+}
+
+.cell--qty,
+.change__after {
+  color: var(--c-success-ink);
+  font-size: var(--fs-money);
+  font-weight: var(--fw-bold);
+}
+
+.cell--change {
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.change__before,
+.change__arrow {
+  color: var(--c-ink-muted);
+}
+
+.change__arrow {
+  font-size: var(--fs-caption);
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: var(--btn-icon);
+  height: var(--btn-icon);
+  border: var(--border-w) solid transparent;
+  border-radius: var(--r-control);
+  background: none;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+}
+
+.remove:hover:not(:disabled) {
+  border-color: var(--c-danger-border);
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger-ink);
+}
+
+.remove:disabled {
+  cursor: not-allowed;
+}
+
+.remove:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+/* Phone: each row becomes a card (PRD section 7). */
+@media (max-width: 767.98px) {
+  .row--head {
+    display: none;
+  }
+
+  .row--body {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'name name remove'
+      'sku qty change';
+    row-gap: var(--sp-1);
+    padding-block: var(--sp-3);
+  }
+
+  .cell--name {
+    grid-area: name;
+  }
+
+  .cell--sku {
+    grid-area: sku;
+  }
+
+  .cell--qty {
+    grid-area: qty;
+  }
+
+  .cell--change {
+    grid-area: change;
+  }
+
+  .cell--remove {
+    grid-area: remove;
+  }
+
+  .remove {
+    width: var(--btn-h);
+    height: var(--btn-h);
+  }
+}

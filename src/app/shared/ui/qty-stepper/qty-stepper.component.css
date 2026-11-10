@@ -9,7 +9,8 @@
 
 .stepper__btn,
 .stepper__input {
-  min-height: var(--hit-min);
+  /* A parent may set --stepper-h to line up with taller fields next to it. */
+  min-height: var(--stepper-h, var(--hit-min));
   border: 0;
   background: none;
   color: var(--c-ink);

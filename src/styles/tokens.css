@@ -166,6 +166,10 @@
   --toolbar-date-w: 300px; /* rentang tanggal */
   --receipt-preview-w: 320px; /* struk di drawer detail */
 
+  /* ── Stok Masuk (dari mockup 6a) ─────────────────────────── */
+  --col-stock-change: 184px; /* "STOK SEBELUM → SESUDAH" */
+  --stock-history-w: 320px; /* panel Riwayat Stok Masuk Terbaru */
+
   /* ── Layar Kasir (dari mockup 1a, 2a, 8a) ────────────────── */
   --search-h: 62px; /* input pencarian besar */
   --fs-search: 18px;
