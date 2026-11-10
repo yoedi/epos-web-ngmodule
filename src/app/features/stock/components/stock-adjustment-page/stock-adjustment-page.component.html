@@ -1,0 +1,196 @@
+<div class="page">
+  <header class="page__header">
+    <h1 class="page__title">Penyesuaian Stok</h1>
+    <p class="page__subtitle">Samakan stok sistem dengan hasil hitung fisik</p>
+  </header>
+
+  <div class="layout">
+    <section class="entry" aria-label="Input penyesuaian stok">
+      <form id="adjustment-form" class="entry__form" novalidate (ngSubmit)="review()">
+        <div class="entry__picker">
+          <app-stock-product-picker (selectionChange)="onSelection($event)" />
+          @if (pickerError) {
+            <p class="field-error" role="alert">{{ pickerError }}</p>
+          }
+        </div>
+
+        <div class="counts">
+          <div class="count">
+            <span class="entry__label" id="system-stock-label">Stok sistem</span>
+            <output class="count__value num" aria-labelledby="system-stock-label">
+              {{ selected ? selected.stock : '—' }}
+            </output>
+          </div>
+
+          <div class="count">
+            <label class="entry__label" for="physical-stock">Stok fisik</label>
+            <input
+              #physicalInput
+              pInputText
+              id="physical-stock"
+              class="count__input num"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="Hasil hitung"
+              [formControl]="physical"
+              [attr.aria-invalid]="physicalError ? true : null"
+              [attr.aria-describedby]="physicalError ? 'physical-stock-error' : null"
+            />
+          </div>
+
+          <div class="count">
+            <span class="entry__label" id="difference-label">Selisih</span>
+            <output
+              class="count__value count__value--diff num"
+              aria-labelledby="difference-label"
+              aria-live="polite"
+              [class.count__value--plus]="difference !== null && difference > 0"
+              [class.count__value--minus]="difference !== null && difference < 0"
+            >
+              {{ difference === null ? '—' : signed(difference) }}
+              @if (difference !== null) {
+                <span class="count__hint">
+                  @if (difference > 0) {
+                    Stok bertambah
+                  } @else if (difference < 0) {
+                    Stok berkurang
+                  } @else {
+                    Tidak ada selisih
+                  }
+                </span>
+              }
+            </output>
+          </div>
+        </div>
+        @if (physicalError) {
+          <p id="physical-stock-error" class="field-error" role="alert">{{ physicalError }}</p>
+        }
+
+        <fieldset
+          class="reasons"
+          [attr.aria-invalid]="reasonError ? true : null"
+          [attr.aria-describedby]="reasonError ? 'reason-error' : null"
+        >
+          <legend class="entry__label">Alasan</legend>
+          <div class="reasons__options">
+            @for (option of reasons; track option.value) {
+              <input
+                class="reasons__radio"
+                type="radio"
+                name="adjustment-reason"
+                [id]="'reason-' + option.value"
+                [value]="option.value"
+                [formControl]="reason"
+              />
+              <label class="reasons__option" [for]="'reason-' + option.value">
+                {{ option.label }}
+              </label>
+            }
+          </div>
+          @if (reasonError) {
+            <p id="reason-error" class="field-error" role="alert">{{ reasonError }}</p>
+          }
+        </fieldset>
+
+        <div class="entry__note">
+          <label class="entry__label" for="adjustment-note">
+            Catatan
+            <span class="entry__label-hint">{{ noteRequired ? '(wajib)' : '(opsional)' }}</span>
+          </label>
+          <input
+            pInputText
+            id="adjustment-note"
+            class="entry__note-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Contoh: Kemasan bocor 1 botol"
+            [formControl]="note"
+            [attr.aria-required]="noteRequired"
+            [attr.aria-invalid]="noteError ? true : null"
+            [attr.aria-describedby]="noteError ? 'note-error' : null"
+          />
+          @if (noteError) {
+            <p id="note-error" class="field-error" role="alert">{{ noteError }}</p>
+          }
+        </div>
+      </form>
+
+      <footer class="entry__footer">
+        @if (saveErrors.length > 0) {
+          <ul class="entry__errors" role="alert">
+            @for (message of saveErrors; track $index) {
+              <li>{{ message }}</li>
+            }
+          </ul>
+        }
+        <p class="entry__summary">
+          @if (selected) {
+            <span class="num">{{ selected.sku }}</span> · {{ selected.name }}
+          } @else {
+            Pilih barang untuk mulai menghitung
+          }
+        </p>
+        <div class="entry__actions">
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            label="Batal"
+            [outlined]="true"
+            [disabled]="submitting || !dirty"
+            (click)="reset()"
+          ></button>
+          <!-- Outside the <form> but tied to it: Enter in any field also opens the confirmation. -->
+          <button
+            pButton
+            type="submit"
+            form="adjustment-form"
+            class="entry__save"
+            label="Simpan Penyesuaian"
+            [loading]="submitting"
+            [disabled]="submitting"
+          ></button>
+        </div>
+      </footer>
+    </section>
+
+    <app-stock-adjustment-history
+      class="layout__history"
+      [state]="(history$ | async) ?? { status: 'loading' }"
+      (retry)="retryHistory()"
+    />
+  </div>
+</div>
+
+<app-confirm-dialog
+  title="Simpan penyesuaian stok?"
+  confirmLabel="Ya, Simpan"
+  [visible]="confirming"
+  [busy]="submitting"
+  (confirmed)="save()"
+  (cancelled)="closeConfirm()"
+>
+  @if (selected && difference !== null) {
+    <dl class="summary">
+      <dt>Barang</dt>
+      <dd>{{ selected.name }}</dd>
+      <dt>Stok</dt>
+      <dd class="num">{{ selected.stock }} → {{ physicalStock }}</dd>
+      <dt>Selisih</dt>
+      <dd
+        class="num"
+        [class.summary__plus]="difference > 0"
+        [class.summary__minus]="difference < 0"
+      >
+        {{ signed(difference) }}
+      </dd>
+      <dt>Alasan</dt>
+      <dd>{{ reasonLabel(reason.value) }}</dd>
+      @if (note.value.trim()) {
+        <dt>Catatan</dt>
+        <dd>{{ note.value.trim() }}</dd>
+      }
+    </dl>
+  }
+</app-confirm-dialog>

@@ -43,6 +43,9 @@ export interface ProductSearchParamsDto {
 
 export type StockMovementType = 'IN' | 'SALE' | 'ADJUSTMENT';
 
+/** `stock_movements.reason` (PRD 14.3); only set on ADJUSTMENT movements. */
+export type AdjustmentReason = 'RUSAK' | 'KEDALUWARSA' | 'HILANG' | 'SALAH_HITUNG' | 'LAINNYA';
+
 /** Movement object of the API (docs/api-spec.md section 5). */
 export interface StockMovementDto {
   id: number;
@@ -52,6 +55,8 @@ export interface StockMovementDto {
   qty: number;
   stock_before: number;
   stock_after: number;
+  /** Only present on ADJUSTMENT movements. */
+  reason?: AdjustmentReason | null;
   note: string | null;
   created_at: string;
 }
@@ -64,6 +69,7 @@ export interface StockMovement {
   qty: number;
   stockBefore: number;
   stockAfter: number;
+  reason: AdjustmentReason | null;
   note: string | null;
   createdAt: string;
 }
@@ -77,6 +83,7 @@ export function toStockMovement(dto: StockMovementDto): StockMovement {
     qty: dto.qty,
     stockBefore: dto.stock_before,
     stockAfter: dto.stock_after,
+    reason: dto.reason ?? null,
     note: dto.note,
     createdAt: dto.created_at,
   };

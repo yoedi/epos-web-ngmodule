@@ -1,0 +1,71 @@
+<section class="history" aria-labelledby="adjustment-history-title">
+  <h2 id="adjustment-history-title" class="history__title">Riwayat Penyesuaian Terbaru</h2>
+  <div class="history__head" aria-hidden="true">Tanggal &amp; Alasan</div>
+
+  <div aria-live="polite" [attr.aria-busy]="state.status === 'loading'">
+    @switch (state.status) {
+      @case ('loading') {
+        @for (row of skeletonRows; track row) {
+          <div class="entry" aria-hidden="true">
+            <p-skeleton width="55%" height="var(--fs-body)" />
+            <p-skeleton width="80%" height="var(--fs-body)" />
+          </div>
+        }
+      }
+      @case ('error') {
+        <app-empty-state
+          icon="pi-exclamation-triangle"
+          title="Gagal memuat riwayat"
+          [danger]="true"
+          [description]="state.message"
+        >
+          <button
+            pButton
+            type="button"
+            label="Coba lagi"
+            icon="pi pi-refresh"
+            (click)="retry.emit()"
+          ></button>
+        </app-empty-state>
+      }
+      @case ('ready') {
+        @if (state.movements.length === 0) {
+          <app-empty-state
+            icon="pi-inbox"
+            title="Belum ada penyesuaian"
+            description="Penyesuaian stok yang disimpan akan muncul di sini."
+          />
+        } @else {
+          <ul class="history__list">
+            @for (movement of state.movements; track movement.id) {
+              <li class="entry">
+                <span class="entry__top">
+                  <span class="entry__date datetime">
+                    {{ movement.createdAt | date: 'd MMM y, HH:mm' : '+0700' }}
+                  </span>
+                  <span
+                    class="entry__qty num"
+                    [class.entry__qty--minus]="movement.qty < 0"
+                  >
+                    {{ signed(movement.qty) }}
+                  </span>
+                </span>
+                <span class="entry__product">{{ movement.productName }}</span>
+                <span class="entry__stock num">
+                  {{ movement.stockBefore }} <span aria-label="menjadi">→</span>
+                  {{ movement.stockAfter }}
+                </span>
+                <span class="entry__note">
+                  <strong>{{ reasonLabel(movement.reason) }}</strong>
+                  @if (movement.note) {
+                    · {{ movement.note }}
+                  }
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      }
+    }
+  </div>
+</section>

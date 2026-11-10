@@ -49,4 +49,36 @@ describe('MockStockService', () => {
     tick(1000);
     expect(error?.code).toBe('NOT_FOUND');
   }));
+
+  it('adjusts to the counted stock and lists it as the latest adjustment', fakeAsync(() => {
+    let saved: StockMovement | undefined;
+    service.adjust(2, 1, 'RUSAK', ' Kemasan bocor 2 botol ').subscribe((m) => (saved = m));
+    tick(1000);
+
+    expect(saved).toEqual(
+      jasmine.objectContaining({
+        productId: 2,
+        type: 'ADJUSTMENT',
+        qty: -2,
+        stockBefore: 3,
+        stockAfter: 1,
+        reason: 'RUSAK',
+        note: 'Kemasan bocor 2 botol',
+      }),
+    );
+
+    let history: StockMovement[] = [];
+    service.recentAdjustments(10).subscribe((m) => (history = m));
+    tick(1000);
+    expect(history[0].id).toBe(saved!.id);
+    expect(history.every((m) => m.type === 'ADJUSTMENT')).toBeTrue();
+  }));
+
+  it('rejects a count equal to the current stock', fakeAsync(() => {
+    let error: AppError | undefined;
+    service.adjust(2, 3, 'SALAH_HITUNG', '').subscribe({ error: (e: AppError) => (error = e) });
+    tick(1000);
+    expect(error?.status).toBe(422);
+    expect(error?.message).toBe('Tidak ada selisih stok');
+  }));
 });

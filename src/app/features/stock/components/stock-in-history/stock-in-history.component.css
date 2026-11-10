@@ -79,3 +79,12 @@
   color: var(--c-ink-muted);
   font-style: italic;
 }
+
+/* Adjustments can go down (Riwayat Penyesuaian Terbaru shares this stylesheet). */
+.entry__qty--minus {
+  color: var(--c-danger-ink);
+}
+
+.entry__stock {
+  color: var(--c-ink-secondary);
+}

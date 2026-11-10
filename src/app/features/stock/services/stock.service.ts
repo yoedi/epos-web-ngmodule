@@ -5,7 +5,9 @@ import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { INLINE_ERROR_CODES } from '../../../core/http/error.interceptor';
 import { PageResponseDto } from '../../../core/http/page.model';
+import { StockAdjustmentRequestDto, toStockAdjustmentRequest } from '../models/stock-adjustment.model';
 import {
+  AdjustmentReason,
   ProductSearchParamsDto,
   StockInLine,
   StockInRequestDto,
@@ -13,6 +15,7 @@ import {
   StockMovement,
   StockMovementDto,
   StockMovementParamsDto,
+  StockMovementType,
   StockProduct,
   StockProductDto,
   toStockInRequest,
@@ -52,9 +55,24 @@ export class StockService {
 
   /** Latest stock-in movements, newest first. */
   recentStockIn(size: number): Observable<StockMovement[]> {
-    return this.requestMovements({ type: 'IN', page: 0, size }).pipe(
-      map((page) => page.content.map(toStockMovement)),
-    );
+    return this.recentMovements('IN', size);
+  }
+
+  /** Saves a stock count. VALIDATION_ERROR is left to the caller to show per field. */
+  adjust(
+    productId: number,
+    physicalStock: number,
+    reason: AdjustmentReason,
+    note: string,
+  ): Observable<StockMovement> {
+    return this.requestAdjustment(
+      toStockAdjustmentRequest(productId, physicalStock, reason, note),
+    ).pipe(map(toStockMovement));
+  }
+
+  /** Latest adjustments, newest first. */
+  recentAdjustments(size: number): Observable<StockMovement[]> {
+    return this.recentMovements('ADJUSTMENT', size);
   }
 
   protected requestProducts(
@@ -76,11 +94,21 @@ export class StockService {
     return this.http.post<StockInResponseDto>(`${this.url}/stock/in`, body);
   }
 
+  protected requestAdjustment(body: StockAdjustmentRequestDto): Observable<StockMovementDto> {
+    return this.http.post<StockMovementDto>(`${this.url}/stock/adjustment`, body);
+  }
+
   protected requestMovements(
     params: StockMovementParamsDto,
   ): Observable<PageResponseDto<StockMovementDto>> {
     return this.http.get<PageResponseDto<StockMovementDto>>(`${this.url}/stock/movements`, {
       params: { ...params },
     });
+  }
+
+  private recentMovements(type: StockMovementType, size: number): Observable<StockMovement[]> {
+    return this.requestMovements({ type, page: 0, size }).pipe(
+      map((page) => page.content.map(toStockMovement)),
+    );
   }
 }

@@ -35,6 +35,7 @@ describe('StockInPageComponent', () => {
     qty: 24,
     stockBefore: 0,
     stockAfter: 24,
+    reason: null,
     note: 'Belanja grosir 16 Sep',
     createdAt: '2026-09-16T15:02:00+07:00',
   };

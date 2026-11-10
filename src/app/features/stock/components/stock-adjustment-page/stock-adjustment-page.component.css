@@ -1,0 +1,161 @@
+/* Layout, card, footer and field styles come from stock-in-page.component.css. */
+
+.entry__picker {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.entry__label-hint {
+  color: var(--c-ink-muted);
+  font-weight: var(--fw-regular);
+}
+
+/* ── Stok sistem · Stok fisik · Selisih ── */
+.counts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.count {
+  display: grid;
+  align-content: start;
+  gap: var(--sp-2);
+}
+
+.count__value,
+.count__input {
+  min-height: var(--input-h-lg);
+  font-size: var(--fs-input-lg);
+}
+
+.count__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-fill-table-head);
+  font-weight: var(--fw-semibold);
+}
+
+.count__input {
+  width: 100%;
+  font-weight: var(--fw-semibold);
+}
+
+.count__value--plus {
+  border-color: var(--c-success-border);
+  background: var(--c-success-bg);
+  color: var(--c-success-ink);
+}
+
+.count__value--minus {
+  border-color: var(--c-danger-border);
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger-ink);
+}
+
+/* The hint is text, so the sign is not shown by colour alone (PRD section 11). */
+.count__hint {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+}
+
+/* ── Alasan ── */
+.reasons {
+  display: grid;
+  gap: var(--sp-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.reasons legend {
+  padding: 0;
+  margin-bottom: var(--sp-2);
+}
+
+.reasons__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* Native radios stay in the tab order and arrow-key group; only their look is replaced. */
+.reasons__radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.reasons__option {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--btn-h);
+  padding-inline: var(--sp-4);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  cursor: pointer;
+  font-weight: var(--fw-medium);
+}
+
+.reasons__option:hover {
+  border-color: var(--c-primary);
+}
+
+.reasons__radio:checked + .reasons__option {
+  border-color: var(--c-primary-tint-border);
+  background: var(--c-primary-tint-bg);
+  color: var(--c-primary);
+  font-weight: var(--fw-semibold);
+}
+
+.reasons__radio:focus-visible + .reasons__option {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+.reasons[aria-invalid='true'] .reasons__option {
+  border-color: var(--c-danger-border);
+}
+
+/* ── Confirmation ── */
+.summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-2) var(--sp-4);
+  margin: 0;
+}
+
+.summary dt {
+  color: var(--c-ink-muted);
+}
+
+.summary dd {
+  margin: 0;
+  font-weight: var(--fw-semibold);
+}
+
+.summary__plus {
+  color: var(--c-success-ink);
+}
+
+.summary__minus {
+  color: var(--c-danger-ink);
+}
+
+/* Phone (PRD section 7). Reason buttons already meet the 44px touch target via --btn-h. */
+@media (max-width: 767.98px) {
+  .counts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .count:last-child {
+    grid-column: 1 / -1;
+  }
+}
