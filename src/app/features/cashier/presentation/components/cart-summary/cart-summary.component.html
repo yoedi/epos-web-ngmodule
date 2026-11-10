@@ -1,0 +1,49 @@
+<section class="summary" aria-label="Ringkasan dan pembayaran">
+  <div class="summary__head">
+    <div>
+      <p class="overline">No. Invoice Sementara</p>
+      <p class="invoice summary__invoice">
+        INV-{{ today | date: 'yyyyMMdd' : '+0700' }}-<span aria-hidden="true">····</span>
+        <span class="sr-only">nomor urut diberikan saat transaksi disimpan</span>
+      </p>
+    </div>
+    <div class="summary__cashier">
+      <p class="overline">Kasir</p>
+      <p class="summary__name">{{ cashierName }}</p>
+    </div>
+  </div>
+
+  <dl class="summary__rows">
+    <div class="summary__row">
+      <dt>Jumlah item</dt>
+      <dd class="num">{{ cart.itemCount }} barang</dd>
+    </div>
+    <div class="summary__row">
+      <dt>Jenis barang</dt>
+      <dd class="num">{{ cart.lineCount }} jenis</dd>
+    </div>
+    <div class="summary__row summary__row--sep">
+      <dt>Subtotal</dt>
+      <dd class="money">{{ cart.total | rupiah }}</dd>
+    </div>
+  </dl>
+
+  <div class="total" aria-live="polite">
+    <p class="overline total__label">Total</p>
+    <p class="money total__value">{{ cart.total | rupiah }}</p>
+  </div>
+
+  <div class="summary__actions">
+    <app-payment-method labelId="summary-method" />
+
+    <button type="button" class="pay" [disabled]="cart.isEmpty" (click)="pay.emit()">
+      Bayar <kbd class="pay__kbd">F9</kbd>
+    </button>
+    <p class="pay__hint">Keyboard eksternal: <kbd>F9</kbd> untuk membuka pembayaran</p>
+
+    <button type="button" class="clear" [disabled]="cart.isEmpty" (click)="clear.emit()">
+      <i class="pi pi-trash" aria-hidden="true"></i>
+      Kosongkan Keranjang
+    </button>
+  </div>
+</section>

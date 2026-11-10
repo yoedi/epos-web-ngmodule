@@ -104,6 +104,7 @@
   --focus-border: var(--c-primary);
   --focus-outline: 2px solid var(--focus-border); /* kontrol kustom (bukan PrimeNG) */
   --border-w: 1px; /* tepi kartu & kontrol */
+  --border-w-strong: 2px; /* input fokus/besar, pilihan aktif */
 
   /* ── Ukuran komponen ────────────────────────────────────── */
   --sidebar-w: 208px;
@@ -155,6 +156,31 @@
 
   /* ── Kategori (belum ada mockup; mengikuti Daftar Produk) ── */
   --col-count: 136px; /* kolom Jumlah Produk */
+
+  /* ── Layar Kasir (dari mockup 1a, 2a, 8a) ────────────────── */
+  --search-h: 62px; /* input pencarian besar */
+  --fs-search: 18px;
+  --search-results-max-h: 360px;
+  --fs-stepper: 15px; /* angka qty di stepper */
+  --fs-total-modal: 40px; /* total belanja di modal pembayaran */
+  --fs-change: 34px; /* kembalian */
+  --fs-amount-input: 30px; /* input uang diterima */
+  --input-h-amount: 64px;
+  --dialog-w-payment: 540px;
+  --col-no: 24px;
+  --col-price-cashier: 84px; /* "Rp 150.000" mono */
+  --col-subtotal: 112px; /* "Rp 1.092.000" mono tebal */
+  --success-tile: 56px; /* ikon centang layar sukses */
+  --row-accent-w: 3px; /* garis kiri baris terpilih */
+  --c-kbd-on-primary: oklch(1 0 0 / 0.2); /* kbd chip di atas tombol utama */
+  --dur-flash: 2.4s; /* sorotan item terakhir ditambahkan */
+
+  /* ── Struk cetak 58 mm (PRD 9.3, mockup 7) ───────────────── */
+  --receipt-w: 58mm;
+  --receipt-pad: 3mm;
+  --fs-receipt: 8.5pt;
+  --fs-receipt-title: 10.5pt;
+  --c-receipt-ink: #000;
 
   /* ── Breakpoint (acuan, dipakai di media query) ─────────── */
   --bp-tablet: 768px;

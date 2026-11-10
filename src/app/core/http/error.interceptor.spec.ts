@@ -1,6 +1,7 @@
 import {
   HTTP_INTERCEPTORS,
   HttpClient,
+  HttpContext,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
@@ -10,7 +11,7 @@ import { MessageService } from 'primeng/api';
 
 import { AuthService } from '../auth/auth.service';
 import { AppError, NETWORK_ERROR_MESSAGE } from './api-error.model';
-import { ErrorInterceptor } from './error.interceptor';
+import { ErrorInterceptor, INLINE_ERROR_CODES } from './error.interceptor';
 
 describe('ErrorInterceptor', () => {
   let http: HttpClient;
@@ -108,5 +109,18 @@ describe('ErrorInterceptor', () => {
     expect(messages.add).toHaveBeenCalledWith(
       jasmine.objectContaining({ summary: 'Tidak berwenang' }),
     );
+  });
+
+  it('skips the toast for codes the request handles inline', () => {
+    const context = new HttpContext().set(INLINE_ERROR_CODES, new Set(['NOT_FOUND']));
+    let error: AppError | undefined;
+    http.get('/api/test', { context }).subscribe({ error: (e: AppError) => (error = e) });
+    httpMock.expectOne('/api/test').flush(
+      { title: 'Tidak ditemukan', status: 404, code: 'NOT_FOUND', detail: 'Barang tidak ada' },
+      { status: 404, statusText: 'Not Found' },
+    );
+
+    expect(error?.code).toBe('NOT_FOUND');
+    expect(messages.add).not.toHaveBeenCalled();
   });
 });

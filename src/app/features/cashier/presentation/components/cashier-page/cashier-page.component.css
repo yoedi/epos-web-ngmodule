@@ -1,0 +1,54 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--sp-4);
+  flex: 1;
+  min-height: 0;
+  padding: var(--pad-content);
+}
+
+.layout__main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--sp-4);
+  min-height: 0;
+}
+
+.hints {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-5);
+  min-height: var(--footer-h);
+  padding-inline: var(--sp-5);
+  border-top: var(--border-w) solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-ink-secondary);
+}
+
+kbd {
+  margin-inline-end: var(--sp-1);
+}
+
+.phone {
+  align-content: center;
+  height: 100%;
+}
+
+/* Tablet (mockup 8a): 58 / 42, no shortcut bar (the summary shows the F9 hint). */
+@media (max-width: 1279.98px) {
+  .layout {
+    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+  }
+
+  .hints {
+    display: none;
+  }
+}

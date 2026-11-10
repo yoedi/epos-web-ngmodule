@@ -20,8 +20,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'kasir' },
+      {
+        // Both roles (PRD section 6).
+        path: 'kasir',
+        loadChildren: () =>
+          import('./features/cashier/cashier.module').then((m) => m.CashierModule),
+      },
       // Placeholders until each feature module exists; swap for loadChildren.
-      { path: 'kasir', component: PlaceholderComponent, data: { title: 'Kasir' } },
       {
         path: 'dashboard',
         component: PlaceholderComponent,

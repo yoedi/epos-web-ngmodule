@@ -1,0 +1,30 @@
+<span class="stepper">
+  <button
+    type="button"
+    class="stepper__btn"
+    [disabled]="value <= min"
+    [attr.aria-label]="'Kurangi ' + label"
+    (click)="valueChange.emit(value - 1)"
+  >
+    −
+  </button>
+  <input
+    #input
+    class="stepper__input num"
+    type="text"
+    inputmode="numeric"
+    autocomplete="off"
+    [value]="value"
+    [attr.aria-label]="'Jumlah ' + label"
+    (change)="commit(input)"
+    (keydown.enter)="input.blur()"
+  />
+  <button
+    type="button"
+    class="stepper__btn"
+    [attr.aria-label]="'Tambah ' + label"
+    (click)="valueChange.emit(value + 1)"
+  >
+    +
+  </button>
+</span>

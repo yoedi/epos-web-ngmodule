@@ -1,0 +1,108 @@
+:host {
+  display: grid;
+  gap: var(--sp-4);
+  padding-top: var(--sp-3);
+}
+
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+.success {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  text-align: center;
+}
+
+.success__icon {
+  display: grid;
+  place-items: center;
+  width: var(--success-tile);
+  height: var(--success-tile);
+  border-radius: var(--r-pill);
+  background: var(--c-success-bg);
+  color: var(--c-success);
+  font-size: var(--fs-display);
+}
+
+.success__invoice {
+  color: var(--c-ink-secondary);
+  font-size: var(--fs-row-name);
+}
+
+.rows {
+  display: grid;
+  overflow: hidden;
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pad-content);
+  border-bottom: var(--border-w) solid var(--c-border-inner);
+  font-size: var(--fs-row-name);
+}
+
+.row dd {
+  font-weight: var(--fw-semibold);
+}
+
+.row--change {
+  border-bottom: 0;
+  background: var(--c-success-bg);
+  color: var(--c-success-ink);
+}
+
+.row--change dd {
+  font-size: var(--fs-change);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-total);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: var(--sp-3);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  min-height: var(--btn-h-lg);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.btn--primary {
+  border: 0;
+  background: var(--c-primary);
+  box-shadow: var(--sh-primary);
+  color: var(--c-ink-on-primary);
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-bold);
+}
+
+.btn__kbd {
+  padding: 0 var(--sp-2);
+  border: 0;
+  background: var(--c-kbd-on-primary);
+  color: inherit;
+}
+
+.btn:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}

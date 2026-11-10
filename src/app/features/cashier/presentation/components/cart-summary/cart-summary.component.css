@@ -1,0 +1,171 @@
+:host {
+  display: flex;
+  min-height: 0;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+}
+
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+.overline {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+}
+
+.summary__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--pad-content);
+  border-bottom: var(--border-w) solid var(--c-border-inner);
+}
+
+.summary__invoice,
+.summary__name {
+  font-size: var(--fs-row-name);
+  font-weight: var(--fw-semibold);
+}
+
+.summary__cashier {
+  text-align: end;
+}
+
+.summary__rows {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--pad-content);
+}
+
+.summary__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-row-name);
+}
+
+.summary__row dd {
+  font-weight: var(--fw-semibold);
+}
+
+.summary__row--sep {
+  padding-top: var(--sp-3);
+  border-top: var(--border-w) solid var(--c-border-inner);
+}
+
+.total {
+  margin-inline: var(--sp-5);
+  padding: var(--pad-content);
+  border: var(--border-w) solid var(--c-primary-tint-border);
+  border-radius: var(--r-card);
+  background: var(--c-primary-tint-bg);
+}
+
+.total__label {
+  color: var(--c-primary-tint-ink);
+  font-weight: var(--fw-bold);
+}
+
+.total__value {
+  overflow-wrap: anywhere;
+  color: var(--c-primary-tint-ink-strong);
+  font-size: var(--fs-total);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-total);
+}
+
+.summary__actions {
+  display: grid;
+  gap: var(--sp-3);
+  margin-top: auto;
+  padding: var(--pad-content);
+}
+
+.pay,
+.clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  border-radius: var(--r-control);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pay {
+  min-height: var(--btn-h-cashier);
+  border: 0;
+  background: var(--c-primary);
+  box-shadow: var(--sh-primary);
+  color: var(--c-ink-on-primary);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+}
+
+.pay:hover:enabled {
+  background: var(--c-primary-hover);
+}
+
+.pay__kbd {
+  padding: 0 var(--sp-2);
+  border: 0;
+  background: var(--c-kbd-on-primary);
+  color: inherit;
+}
+
+.pay__hint {
+  display: none;
+  color: var(--c-ink-secondary);
+  text-align: center;
+}
+
+.clear {
+  min-height: var(--btn-h);
+  border: var(--border-w) solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--p-button-secondary-color);
+  font-weight: var(--fw-semibold);
+}
+
+.clear:hover:enabled {
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger);
+}
+
+.pay:disabled,
+.clear:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+/* Tablet (mockup 8a): Kosongkan lives in the cart header, F9 becomes a caption. */
+@media (max-width: 1279.98px) {
+  .pay__kbd,
+  .clear {
+    display: none;
+  }
+
+  .pay__hint {
+    display: block;
+  }
+}

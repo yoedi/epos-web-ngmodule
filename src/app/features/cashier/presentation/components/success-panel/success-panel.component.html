@@ -1,0 +1,29 @@
+<div class="success" role="status">
+  <span class="success__icon" aria-hidden="true"><i class="pi pi-check"></i></span>
+  <p class="invoice success__invoice">{{ sale.invoiceNo }}</p>
+</div>
+
+<dl class="rows">
+  <div class="row">
+    <dt>Total</dt>
+    <dd class="money">{{ sale.total | rupiah }}</dd>
+  </div>
+  <div class="row">
+    <dt>Dibayar</dt>
+    <dd class="money">{{ sale.paid | rupiah }}</dd>
+  </div>
+  <div class="row row--change">
+    <dt>Kembalian</dt>
+    <dd class="money">{{ sale.change | rupiah }}</dd>
+  </div>
+</dl>
+
+<div class="actions">
+  <button type="button" class="btn" (click)="printReceipt.emit()">
+    <i class="pi pi-print" aria-hidden="true"></i>
+    Cetak Struk
+  </button>
+  <button #newSaleButton type="button" class="btn btn--primary" (click)="newSale.emit()">
+    Transaksi Baru <kbd class="btn__kbd">Enter</kbd>
+  </button>
+</div>

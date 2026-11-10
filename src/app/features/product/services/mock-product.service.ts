@@ -56,7 +56,7 @@ function sample(
 }
 
 /** Sample products from PRD section 12; cost prices and status from mockup 4a. */
-const MOCK_PRODUCTS: readonly ProductDto[] = [
+export const MOCK_PRODUCTS: readonly ProductDto[] = [
   sample(1, 'BRS-005', '8991234567883', 'Beras Premium 5 kg', 1, 'KG', [69500, 78000], [24, 10]),
   sample(2, 'MYK-002', '8991234567890', 'Minyak Goreng 2 L', 1, 'LITER', [32000, 36500], [3, 12]),
   sample(3, 'GLA-001', '8991234567906', 'Gula Pasir 1 kg', 1, 'KG', [15200, 17500], [40, 15]),

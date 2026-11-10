@@ -1,0 +1,263 @@
+:host {
+  display: flex;
+  min-height: 0;
+}
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+}
+
+.cart__head,
+.cart__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--pad-content);
+}
+
+.cart__title {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-heading);
+}
+
+.cart__count,
+.pill {
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--c-fill-table-head);
+  color: var(--c-ink-secondary);
+}
+
+.cart__hint {
+  margin: 0 0 0 auto;
+  color: var(--c-ink-secondary);
+}
+
+.cart__clear,
+.notice__close,
+.delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-width: var(--hit-min);
+  min-height: var(--hit-min);
+  border: 0;
+  border-radius: var(--r-control);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.cart__clear {
+  display: none;
+  margin-inline-start: auto;
+  padding-inline: var(--sp-3);
+  border: var(--border-w) solid var(--c-border);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 var(--sp-5) var(--sp-3);
+  padding-inline-start: var(--sp-3);
+  border: var(--border-w) solid var(--c-warning-border);
+  border-radius: var(--r-control);
+  background: var(--c-warning-bg);
+  color: var(--c-warning-ink);
+}
+
+.notice--error {
+  border-color: var(--c-danger-border);
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger-ink);
+}
+
+.notice__text {
+  flex: 1;
+  font-weight: var(--fw-semibold);
+}
+
+.cart__empty {
+  flex: 1;
+  align-content: center;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.table__body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.row {
+  display: grid;
+  grid-template-columns:
+    var(--col-no) minmax(var(--col-name-min), 1fr) var(--col-price-cashier)
+    var(--stepper-w) var(--col-subtotal) var(--hit-min);
+  align-items: center;
+  gap: var(--sp-2);
+  padding-inline: var(--sp-5) var(--sp-3);
+}
+
+.row--head {
+  min-height: var(--table-head-h);
+  border-block: var(--border-w) solid var(--c-border);
+  background: var(--c-fill-table-head);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-table-head);
+  text-transform: uppercase;
+}
+
+.row--body {
+  min-height: var(--table-row-h);
+  border-bottom: var(--border-w) solid var(--c-border-row);
+  box-shadow: inset var(--row-accent-w) 0 0 transparent;
+  cursor: pointer;
+}
+
+.row--selected {
+  background: var(--c-primary-tint-bg);
+  box-shadow: inset var(--row-accent-w) 0 0 var(--c-primary);
+}
+
+.row--flash {
+  animation: flash var(--dur-flash) ease-out;
+}
+
+@keyframes flash {
+  from {
+    background: var(--c-primary-tint-border);
+  }
+}
+
+.end {
+  text-align: end;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.col-no {
+  color: var(--c-ink-muted);
+}
+
+.name {
+  display: grid;
+  min-width: 0;
+}
+
+.name__line {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.name__text {
+  overflow: hidden;
+  font-size: var(--fs-row-name);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pill {
+  flex: none;
+  padding-block: 0;
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+}
+
+.pill--new {
+  background: var(--c-primary);
+  color: var(--c-ink-on-primary);
+  text-transform: uppercase;
+}
+
+.pill--low {
+  border: var(--border-w) solid var(--c-warning-border);
+  background: var(--c-warning-bg);
+  color: var(--c-warning-ink);
+}
+
+.name__sub {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-caption);
+}
+
+.name__price {
+  display: none;
+}
+
+.subtotal {
+  font-size: var(--fs-row-name);
+  font-weight: var(--fw-bold);
+}
+
+.delete {
+  color: var(--c-danger);
+}
+
+.delete:hover,
+.cart__clear:hover:enabled {
+  background: var(--c-danger-hover-bg);
+  color: var(--c-danger);
+}
+
+.cart__foot {
+  justify-content: space-between;
+  border-top: var(--border-w) solid var(--c-border-inner);
+  background: var(--c-fill-card-footer);
+  color: var(--c-ink-secondary);
+}
+
+button:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}
+
+/* Tablet (mockup 8a): price moves under the name, Kosongkan moves here. */
+@media (max-width: 1279.98px) {
+  .row {
+    grid-template-columns:
+      minmax(var(--col-name-min), 1fr) var(--stepper-w) var(--col-subtotal) var(--hit-min);
+  }
+
+  .col-no,
+  .col-price,
+  .name__category,
+  .cart__hint,
+  .cart__foot {
+    display: none;
+  }
+
+  .name__price {
+    display: inline;
+  }
+
+  .cart__clear {
+    display: inline-flex;
+  }
+}

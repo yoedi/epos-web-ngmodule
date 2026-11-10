@@ -15,6 +15,7 @@ import { ConfirmDialogComponent } from './ui/confirm-dialog/confirm-dialog.compo
 import { EmptyStateComponent } from './ui/empty-state/empty-state.component';
 import { MoneyInputComponent } from './ui/money-input/money-input.component';
 import { PaginationComponent } from './ui/pagination/pagination.component';
+import { QtyStepperComponent } from './ui/qty-stepper/qty-stepper.component';
 import { StockBadgeComponent } from './ui/stock-badge/stock-badge.component';
 
 const ANGULAR_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
@@ -33,6 +34,7 @@ const SHARED_DECLARATIONS = [
   EmptyStateComponent,
   MoneyInputComponent,
   PaginationComponent,
+  QtyStepperComponent,
   RupiahPipe,
   StockBadgeComponent,
 ];

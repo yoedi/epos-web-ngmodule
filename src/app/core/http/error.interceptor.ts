@@ -1,4 +1,5 @@
 import {
+  HttpContextToken,
   HttpErrorResponse,
   HttpEvent,
   HttpHandler,
@@ -22,6 +23,13 @@ const INLINE_CODES = new Set([
   'CATEGORY_IN_USE', // "Kategori tidak bisa dihapus" dialog
 ]);
 
+/**
+ * Extra codes one request shows inline itself, so no toast is added for them.
+ * Example: `{ context: new HttpContext().set(INLINE_ERROR_CODES, new Set(['NOT_FOUND'])) }`.
+ * UNAUTHORIZED is always handled here, whatever the request lists.
+ */
+export const INLINE_ERROR_CODES = new HttpContextToken<ReadonlySet<string>>(() => new Set());
+
 const FORBIDDEN_MESSAGE = 'Anda tidak berwenang melakukan tindakan ini.';
 
 /** Turns ProblemDetail responses into AppError (CLAUDE.md section 7). */
@@ -39,19 +47,19 @@ export class ErrorInterceptor implements HttpInterceptor {
           return throwError(() => err);
         }
         const appError = toAppError(err);
-        this.handle(appError);
+        this.handle(appError, req.context.get(INLINE_ERROR_CODES));
         return throwError(() => appError);
       }),
     );
   }
 
-  private handle(error: AppError): void {
+  private handle(error: AppError, inlineForRequest: ReadonlySet<string>): void {
     if (error.code === 'UNAUTHORIZED') {
       // Resolved lazily: AuthService -> HttpClient -> interceptors would be circular.
       this.injector.get(AuthService).logout();
       return;
     }
-    if (INLINE_CODES.has(error.code)) {
+    if (INLINE_CODES.has(error.code) || inlineForRequest.has(error.code)) {
       return;
     }
     this.messages.add({

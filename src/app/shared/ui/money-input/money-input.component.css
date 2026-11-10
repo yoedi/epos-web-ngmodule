@@ -23,3 +23,18 @@
 .money--invalid .money__input {
   border-color: var(--c-danger);
 }
+
+.money--lg .money__prefix {
+  inset-inline-start: var(--sp-5);
+  font-size: var(--fs-display);
+}
+
+.money--lg .money__input {
+  min-height: var(--input-h-amount);
+  padding-inline-end: var(--sp-5);
+  border-width: var(--border-w-strong);
+  border-radius: var(--r-input-lg);
+  font-size: var(--fs-amount-input);
+  font-weight: var(--fw-bold);
+  text-align: end;
+}

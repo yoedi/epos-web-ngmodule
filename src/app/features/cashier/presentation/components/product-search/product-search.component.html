@@ -1,0 +1,81 @@
+<div class="search">
+  <label class="sr-only" for="cashier-search">Cari barang</label>
+  <i class="pi pi-search search__icon" aria-hidden="true"></i>
+  <input
+    #input
+    id="cashier-search"
+    class="search__input"
+    type="text"
+    role="combobox"
+    autocomplete="off"
+    spellcheck="false"
+    aria-autocomplete="list"
+    aria-controls="cashier-search-results"
+    placeholder="Scan barcode atau ketik nama barang (F2)"
+    [formControl]="term"
+    [attr.aria-expanded]="open"
+    [attr.aria-activedescendant]="activeOptionId"
+    (keydown)="handleKeydown($event)"
+  />
+  <span class="search__scanner">
+    <i class="pi pi-barcode" aria-hidden="true"></i>
+    Scanner siap
+  </span>
+
+  <div id="cashier-search-results" class="results" [hidden]="!open">
+    @switch (state.status) {
+      @case ('loading') {
+        <div aria-hidden="true">
+          @for (row of skeletonRows; track row) {
+            <div class="option option--skeleton">
+              <p-skeleton width="60%" height="var(--fs-row-name)" />
+              <p-skeleton width="var(--col-money)" height="var(--fs-row-name)" />
+            </div>
+          }
+        </div>
+        <span class="sr-only" role="status">Mencari barang…</span>
+      }
+      @case ('error') {
+        <div class="results__message" role="alert">
+          <span>{{ errorMessage }}</span>
+          <button type="button" class="results__retry" (click)="retry()">Coba lagi</button>
+        </div>
+      }
+      @case ('ready') {
+        @if (products.length === 0) {
+          <p class="results__message" role="status">Barang tidak ditemukan</p>
+        } @else {
+          <ul class="results__list" role="listbox" aria-label="Hasil pencarian">
+            @for (product of products; track product.id; let i = $index) {
+              <li
+                class="option"
+                role="option"
+                [id]="optionId(i)"
+                [class.option--active]="i === activeIndex"
+                [class.option--sold-out]="isSoldOut(product)"
+                [attr.aria-selected]="i === activeIndex"
+                [attr.aria-disabled]="isSoldOut(product) || null"
+                (mousedown)="$event.preventDefault()"
+                (mouseenter)="activeIndex = i"
+                (click)="pick(product)"
+              >
+                <span class="option__main">
+                  <span class="option__name">{{ product.name }}</span>
+                  <span class="option__sub sku">{{ product.sku }} · {{ product.categoryName }}</span>
+                </span>
+                <span class="option__price money">{{ product.sellPrice | rupiah }}</span>
+                <span class="option__stock">
+                  @if (isSoldOut(product)) {
+                    <app-stock-badge status="OUT_OF_STOCK" />
+                  } @else {
+                    Stok <span class="num">{{ product.stock }}</span>
+                  }
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      }
+    }
+  </div>
+</div>

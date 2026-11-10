@@ -1,0 +1,39 @@
+.stepper {
+  display: grid;
+  grid-template-columns: var(--stepper-btn) 1fr var(--stepper-btn);
+  width: var(--stepper-w);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+}
+
+.stepper__btn,
+.stepper__input {
+  min-height: var(--hit-min);
+  border: 0;
+  background: none;
+  color: var(--c-ink);
+  font-size: var(--fs-stepper);
+  font-weight: var(--fw-semibold);
+}
+
+.stepper__btn {
+  cursor: pointer;
+}
+
+.stepper__btn:disabled {
+  color: var(--c-ink-muted);
+  cursor: not-allowed;
+}
+
+.stepper__input {
+  width: 100%;
+  border-inline: var(--border-w) solid var(--c-border);
+  text-align: center;
+}
+
+.stepper__btn:focus-visible,
+.stepper__input:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: var(--focus-ring);
+}

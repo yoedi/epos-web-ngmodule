@@ -1,0 +1,76 @@
+@if (isPhone$ | async) {
+  <app-empty-state
+    class="phone"
+    icon="pi-desktop"
+    title="Layar Kasir tersedia di laptop atau tablet"
+    description="Buka ePOS dari laptop atau tablet untuk melayani transaksi. Dari HP, Anda tetap bisa melihat produk dan riwayat transaksi."
+  />
+} @else {
+  @if (vm$ | async; as vm) {
+    <h1 class="sr-only">Kasir</h1>
+
+    <div class="layout">
+      <div class="layout__main">
+        <app-product-search (picked)="addProduct($event)" (scanned)="scan($event)" />
+        <app-cart-table
+          [cart]="vm.state.cart"
+          [selectedId]="vm.state.selectedId"
+          [highlightedId]="vm.state.highlightedId"
+          [notice]="vm.state.notice"
+          (qtyChange)="changeQty($event)"
+          (remove)="store.remove($event)"
+          (selectItem)="store.select($event)"
+          (clear)="askClear()"
+          (dismissNotice)="store.dismissNotice()"
+        />
+      </div>
+
+      <app-cart-summary
+        [cart]="vm.state.cart"
+        [cashierName]="vm.cashierName"
+        [today]="today"
+        (pay)="openPayment()"
+        (clear)="askClear()"
+      />
+    </div>
+
+    <footer class="hints" aria-label="Pintasan keyboard">
+      <span><kbd>F2</kbd> Fokus pencarian</span>
+      <span><kbd>F9</kbd> Buka pembayaran</span>
+      <span><kbd>Enter</kbd> Tambah item / konfirmasi</span>
+      <span><kbd>+ / −</kbd> Ubah qty item terpilih</span>
+      <span><kbd>Delete</kbd> Hapus item terpilih</span>
+      <span><kbd>Esc</kbd> Tutup modal</span>
+    </footer>
+
+    <app-payment-modal
+      [visible]="vm.state.phase !== 'idle'"
+      [total]="vm.state.cart.total"
+      [submitting]="vm.state.submitting"
+      [failure]="vm.state.failure"
+      [sale]="vm.state.sale"
+      (submitted)="pay($event)"
+      (closed)="closePayment()"
+      (printReceipt)="printReceipt()"
+      (newSale)="startNewSale()"
+    />
+
+    <app-confirm-dialog
+      title="Kosongkan keranjang?"
+      confirmLabel="Kosongkan"
+      [visible]="confirmingClear"
+      [danger]="true"
+      (confirmed)="confirmClear()"
+      (cancelled)="cancelClear()"
+    >
+      <p>
+        Semua barang (<span class="num">{{ vm.state.cart.itemCount }}</span> barang) akan dihapus
+        dari keranjang.
+      </p>
+    </app-confirm-dialog>
+
+    @if (vm.state.sale) {
+      <app-receipt-print [sale]="vm.state.sale" [store]="storeSettings$ | async" />
+    }
+  }
+}

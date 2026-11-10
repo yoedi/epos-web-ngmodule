@@ -24,6 +24,8 @@ export class MoneyInputComponent implements ControlValueAccessor {
   @Input({ required: true }) inputId!: string;
   @Input() invalid = false;
   @Input() describedBy: string | null = null;
+  /** Big right-aligned amount, as in the payment modal of the cashier screen. */
+  @Input() large = false;
 
   @ViewChild('input', { static: true }) private input!: ElementRef<HTMLInputElement>;
 
@@ -33,6 +35,12 @@ export class MoneyInputComponent implements ControlValueAccessor {
 
   private onChange: (value: number | null) => void = () => undefined;
   onTouched: () => void = () => undefined;
+
+  focus(): void {
+    const element = this.input.nativeElement;
+    element.focus();
+    element.setSelectionRange(element.value.length, element.value.length);
+  }
 
   writeValue(value: number | null): void {
     this.text = value === null ? '' : formatThousands(value);

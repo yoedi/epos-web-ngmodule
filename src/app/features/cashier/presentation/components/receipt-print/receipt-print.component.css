@@ -1,0 +1,52 @@
+/* Printed only: see styles/print.css for hiding the rest of the page. */
+:host {
+  display: none;
+}
+
+@media print {
+  :host {
+    display: block;
+  }
+}
+
+.receipt {
+  width: var(--receipt-w);
+  padding: var(--receipt-pad);
+  color: var(--c-receipt-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-receipt);
+  line-height: var(--lh-body);
+}
+
+p {
+  margin: 0;
+}
+
+hr {
+  margin: var(--sp-1) 0;
+  border: 0;
+  border-top: var(--border-w) dashed var(--c-receipt-ink);
+}
+
+.center {
+  text-align: center;
+}
+
+.store {
+  font-size: var(--fs-receipt-title);
+  font-weight: var(--fw-bold);
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.item {
+  break-inside: avoid;
+}
+
+.total {
+  font-weight: var(--fw-bold);
+}
