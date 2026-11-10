@@ -43,3 +43,6 @@ Thumbs.db
 
 # Design mockups (local reference only)
 /docs/design/
+
+# Environment variables
+.env
