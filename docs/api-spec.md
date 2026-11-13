@@ -78,6 +78,7 @@ Error validasi menyertakan daftar field:
 | `INSUFFICIENT_PAYMENT` | 422    | Uang diterima kurang dari total                |
 | `PRODUCT_INACTIVE`     | 422    | Produk nonaktif tidak bisa dijual              |
 | `EMPTY_CART`           | 422    | Transaksi tanpa item                           |
+| `NO_STOCK_DIFFERENCE`  | 422    | Penyesuaian stok tanpa selisih                 |
 | `INTERNAL_ERROR`       | 500    | Kesalahan tak terduga                          |
 
 ### Ringkasan hak akses
@@ -410,7 +411,7 @@ Layar 9.8. Satu produk per permintaan.
 }
 ```
 
-Client mengirim **hasil hitung fisik**, bukan selisih. Server menghitung `qty = physical_stock - current_stock`. Jika selisih 0, kembalikan 422 dengan detail "Tidak ada selisih stok".
+Client mengirim **hasil hitung fisik**, bukan selisih. Server menghitung `qty = physical_stock - current_stock`. Jika selisih 0, kembalikan 422 dengan `code` `NO_STOCK_DIFFERENCE` dan detail "Tidak ada selisih stok".
 
 **Response 201:** objek movement seperti di atas, dengan `type: "ADJUSTMENT"` dan `reason` terisi.
 
@@ -482,6 +483,15 @@ Dipakai header aplikasi dan struk. Dapat diakses semua role.
 
 **Request:** objek sama seperti response.
 **Response 200:** objek yang sudah diperbarui.
+
+**Validasi (400 `VALIDATION_ERROR`):**
+
+- `store_name` wajib, maksimal 100 karakter.
+- `address` maksimal 255, `phone` maksimal 30, `receipt_footer` maksimal 255 karakter.
+- `address`, `phone`, dan `receipt_footer` opsional. Nilai yang tidak dikirim, kosong, atau hanya spasi disimpan sebagai `null` dan dikembalikan sebagai `null`.
+- Spasi di awal dan akhir dipangkas (trim).
+
+Toko hanya punya satu record pengaturan, jadi tidak ada `id` pada request maupun response, dan tidak ada endpoint create atau delete.
 
 ---
 
