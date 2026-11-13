@@ -7,7 +7,6 @@ import { LowStockListComponent } from './components/low-stock-list/low-stock-lis
 import { TopProductsListComponent } from './components/top-products-list/top-products-list.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardService } from './services/dashboard.service';
-import { MockDashboardService } from './services/mock-dashboard.service';
 
 @NgModule({
   declarations: [
@@ -17,9 +16,6 @@ import { MockDashboardService } from './services/mock-dashboard.service';
     TopProductsListComponent,
   ],
   imports: [SharedModule, DashboardRoutingModule],
-  providers: [
-    // Mock mode: use plain `DashboardService` once GET /reports/daily is available.
-    { provide: DashboardService, useClass: MockDashboardService },
-  ],
+  providers: [DashboardService],
 })
 export class DashboardModule {}

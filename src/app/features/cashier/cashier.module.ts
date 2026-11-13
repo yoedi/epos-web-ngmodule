@@ -6,8 +6,8 @@ import { CheckoutUseCase } from './application/checkout.use-case';
 import { ScanBarcodeUseCase } from './application/scan-barcode.use-case';
 import { SearchProductsUseCase } from './application/search-products.use-case';
 import { CashierRoutingModule } from './cashier-routing.module';
-import { MockPosBackend } from './data/mock/mock-pos.backend';
-import { MockProductCatalogRepository, MockSaleRepository } from './data/mock/mock-repositories';
+import { ProductCatalogHttpRepository } from './data/repositories/product-catalog-http.repository';
+import { SaleHttpRepository } from './data/repositories/sale-http.repository';
 import { ProductCatalogRepository } from './domain/repositories/product-catalog.repository';
 import { SaleRepository } from './domain/repositories/sale.repository';
 import { CartSummaryComponent } from './presentation/components/cart-summary/cart-summary.component';
@@ -33,13 +33,8 @@ import { SuccessPanelComponent } from './presentation/components/success-panel/s
   ],
   imports: [SharedModule, CashierRoutingModule],
   providers: [
-    // Mock mode: once epos-api is available, bind the HTTP implementations instead
-    // and drop MockPosBackend:
-    //   { provide: SaleRepository, useClass: SaleHttpRepository },
-    //   { provide: ProductCatalogRepository, useClass: ProductCatalogHttpRepository },
-    MockPosBackend,
-    { provide: SaleRepository, useClass: MockSaleRepository },
-    { provide: ProductCatalogRepository, useClass: MockProductCatalogRepository },
+    { provide: SaleRepository, useClass: SaleHttpRepository },
+    { provide: ProductCatalogRepository, useClass: ProductCatalogHttpRepository },
     AddToCartUseCase,
     CheckoutUseCase,
     ScanBarcodeUseCase,

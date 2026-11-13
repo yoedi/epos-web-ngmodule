@@ -7,7 +7,6 @@ import { StockInHistoryComponent } from './components/stock-in-history/stock-in-
 import { StockInPageComponent } from './components/stock-in-page/stock-in-page.component';
 import { StockInTableComponent } from './components/stock-in-table/stock-in-table.component';
 import { StockProductPickerComponent } from './components/stock-product-picker/stock-product-picker.component';
-import { MockStockService } from './services/mock-stock.service';
 import { StockService } from './services/stock.service';
 import { StockRoutingModule } from './stock-routing.module';
 
@@ -21,9 +20,6 @@ import { StockRoutingModule } from './stock-routing.module';
     StockProductPickerComponent,
   ],
   imports: [SharedModule, StockRoutingModule],
-  providers: [
-    // Mock mode: use plain `StockService` once the epos-api endpoints are available.
-    { provide: StockService, useClass: MockStockService },
-  ],
+  providers: [StockService],
 })
 export class StockModule {}
