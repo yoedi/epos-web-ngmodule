@@ -7,7 +7,9 @@
   <div class="header__store">
     @if (store.status === 'ready') {
       <p class="header__name">{{ store.data.storeName }}</p>
-      <p class="header__sub header__address">{{ store.data.address }}</p>
+      @if (store.data.address) {
+        <p class="header__sub header__address">{{ store.data.address }}</p>
+      }
     } @else if (store.status === 'loading') {
       <span class="sr-only" role="status">Memuat info toko</span>
       <p-skeleton width="16ch" height="1em" />

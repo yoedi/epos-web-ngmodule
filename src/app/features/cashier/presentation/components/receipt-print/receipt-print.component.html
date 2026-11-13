@@ -2,8 +2,12 @@
   @if (store) {
     <header class="center">
       <p class="store">{{ store.storeName }}</p>
-      <p>{{ store.address }}</p>
-      <p>Telp. <span class="num">{{ store.phone }}</span></p>
+      @if (store.address) {
+        <p>{{ store.address }}</p>
+      }
+      @if (store.phone) {
+        <p>Telp. <span class="num">{{ store.phone }}</span></p>
+      }
     </header>
     <hr />
   }
